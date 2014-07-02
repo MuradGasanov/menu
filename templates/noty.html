@@ -1,0 +1,24 @@
+{% load staticfiles %}
+<span id="k-notification" style="display:none;"></span>
+
+<script id="errorTemplate" type="text/x-kendo-template">
+    <div class="error-noti">
+        <img src="{% static "img/noty/error-icon.png" %}" />
+        <h3>#= title #</h3>
+        <p>#= message #</p>
+    </div>
+</script>
+
+<script id="waitTemplate" type="text/x-kendo-template">
+    <div class="wait-noti">
+        <img src="{% static "img/noty/wait-icon.png" %}" />
+        <h3>#= message #</h3>
+    </div>
+</script>
+
+<script id="doneTemplate" type="text/x-kendo-template">
+    <div class="done-noti">
+        <img src="{% static "img/noty/done-icon.png" %}" />
+        <h3>#= message #</h3>
+    </div>
+</script>

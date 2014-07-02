@@ -1,0 +1,6 @@
+mysql -uroot -p'ROOTPASSWORD'
+
+
+CREATE DATABASE menu CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER 'menu'@'localhost' IDENTIFIED BY 'menu';
+GRANT ALL PRIVILEGES ON menu.* TO ‘menu'@'localhost';

@@ -1,0 +1,166 @@
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Менеджер{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "fontawesome/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/noty.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/manager.css" %}"/>
+{% endblock %}
+{% block script %}
+    <script src="{% static "kendo/js/cultures/kendo.culture.ru-RU.min.js" %}"></script>
+    <script src="{% static "kendo/js/kendo.web.min.js" %}"></script>
+    <script src="{% static "js/noty.js" %}"></script>
+    <script src="{% static "js/manager.js" %}"></script>
+{% endblock %}
+{% block content %}
+    <div id="tabs">
+        <ul>
+            <li class="k-state-active">
+                <i class="fa fa-book"></i> Меню
+            </li>
+            <li>
+                <i class="fa fa-users"></i> Заказы
+            </li>
+            <li>
+                <i class="fa fa-mobile-phone"></i> СМС рассылки
+            </li>
+        </ul>
+        <div>
+            <div id="categories" style="margin-bottom: 15px;"></div>
+            <div id="menu"></div>
+        </div>
+        <div>
+            Заказы
+        </div>
+        <div>
+            СМС рассылки
+        </div>
+    </div>
+
+    {% include "noty.html" %}
+
+    <script type="text/x-kendo-template" id="categories_header_template">
+        <span class="k-button add_categories"><i class="fa fa-plus-circle"></i> Добавить категорию</span>
+        <span class="k-button expand_categories"><i class="fa fa-caret-down"></i> Раскрыть</span>
+        <span class="k-button collapse_categories"><i class="fa fa-caret-right"></i> Свернуть</span>
+        <span class="k-button reload_categories" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
+    </script>
+
+    <script type="text/x-kendo-template" id="menu_header_template">
+        <span class="k-button add_menu"><i class="fa fa-plus-circle"></i> Добавить</span>
+        <span class="k-button reload_menu" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
+    </script>
+
+    <div id="change_categories_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Редактирование категории</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="change_categories" class="k-edit-form-container" style="width: inherit;">
+                            <div class="k-edit-label">
+                                <label>Название<span class="required">*</span>:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="name" required placeholder="Название"
+                                       style="width: 100%"
+                                       data-bind="value: o.name"/>
+                            </div>
+                            <div class="k-edit-label">
+                                <label>Позиция:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input data-role="numerictextbox"
+                                       data-format="n0"
+                                       data-min="0"
+                                       data-bind="value: o.weight"
+                                       style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
+                        <button id="categories_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="change_menu_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" id="myModalLabel">Редактирование блюда</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="change_menu" class="k-edit-form-container" style="width: inherit;">
+                            <div class="k-edit-label">
+                                <label>Категория<span class="required">*</span>:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <select data-role="dropdownlist" name="category" style="width: 100%"
+                                        data-bind="source: categories, value: o.category"
+                                        data-text-field="name" data-value-field="id"
+                                        data-option-label="Выберите категорию..." required>
+                                </select>
+                                <span class="k-invalid-msg" data-for="category"></span>
+                            </div>
+                            <div class="k-edit-label">
+                                <label>Название<span class="required">*</span>:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="name" required placeholder="Название"
+                                       style="width: 100%"
+                                       data-bind="value: o.name"/>
+                            </div>
+                            <div class="k-edit-label">
+                                <label>Описание:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <textarea placeholder="Описание" class="k-textbox" data-bind="value: o.description"
+                                          style="width: 100%; height: 150px;"> </textarea>
+                            </div>
+                            <div class="k-edit-label">
+                                <label>Цена<span class="required">*</span>:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input data-role="numerictextbox"
+                                       data-culture="ru-RU"
+                                       data-format="c"
+                                       data-min="0"
+                                       data-bind="value: o.price"
+                                       style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <input type="file" name="file_uploader" id="file_uploader" />
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
+                        <button id="menu_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script id="fileTemplate" type="text/x-kendo-template">
+        <span class='k-progress'></span>
+        <div class='file-wrapper' data-type='#=files[0].extension#' data-file-url='#=files[0].file#'>
+            <span class='file-icon #=addExtensionClass(files[0].extension)#'></span>
+            <h4 class='file-heading file-name-heading'>Имя: <a class="">#=name#</a></h4>
+            <h4 class='file-heading file-size-heading'>Размер: #=Math.round((size/1024)*100)/100# Кбайт</h4>
+            <button type='button' class='k-upload-action'></button>
+        </div>
+    </script>
+
+{% endblock %}
