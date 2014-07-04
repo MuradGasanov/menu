@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os
+from menu import settings
 
 __author__ = 'Murad Gasanov'
 
@@ -72,7 +74,7 @@ class Categories():
         if categories:
             return HttpResponse(json.dumps(categories), content_type="application/json")
         else:
-            return HttpResponse("", content_type="application/json")
+            return HttpResponse("[]", content_type="application/json")
 
     @staticmethod
     def create(request):
@@ -111,7 +113,7 @@ class Categories():
 
         category.delete()
 
-        return HttpResponse("ok", content_type="application/json")
+        return HttpResponse(item.get("id"), content_type="application/json")
 
 ########################################################################################################################
 
@@ -130,6 +132,7 @@ class Menu():
                 "name": m.name,
                 "description": m.description,
                 "price": m.price,
+                "image": m.image.url,
                 "category": {
                     "id": m.category.id,
                     "name": m.category.name
@@ -138,7 +141,7 @@ class Menu():
         if menu_list:
             return HttpResponse(json.dumps(menu_list), content_type="application/json")
         else:
-            return HttpResponse("", content_type="application/json")
+            return HttpResponse("[]", content_type="application/json")
 
     @staticmethod
     def create(request):
@@ -154,6 +157,7 @@ class Menu():
         )
 
         return HttpResponse(json.dumps({"id": menu.id,
+                                        "name": menu.name,
                                         "description": menu.description,
                                         "price": menu.price,
                                         "category": {
@@ -167,5 +171,37 @@ class Menu():
         menu.image = request.FILES['image']
         menu.save()
 
-        return HttpResponse(json.dumps({}),
+        return HttpResponse(json.dumps({"id": menu.id,
+                                        "image": menu.image.url}),
                             content_type="application/json")
+
+    @staticmethod
+    def update(request):
+        item = json.loads(request.POST.get("item"))
+
+        category = models.Categories.objects.get(id=int(item.get("category").get("id")))
+
+        menu = models.Menu.objects.get(id=int(item.get("id")))
+        menu.name = item.get("name")
+        menu.description = item.get("description")
+        menu.price = float(item.get("price"))
+        menu.category = category
+        menu.save()
+
+        return HttpResponse(json.dumps({"id": menu.id,
+                                        "name": menu.name,
+                                        "description": menu.description,
+                                        "price": menu.price,
+                                        "category": {
+                                            "id": menu.category.id,
+                                            "name": menu.category.name}}), content_type="application/json")
+
+    @staticmethod
+    def destroy(request):
+        item = json.loads(request.POST.get("item"))
+
+        menu = models.Menu.objects.get(id=int(item.get("id")))
+
+        menu.delete()
+
+        return HttpResponse(item.get("id"), content_type="application/json")

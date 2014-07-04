@@ -1,3 +1,14 @@
 .k-grid tbody .k-button {
     min-width: 12px;
 }
+
+#change_menu_window button.k-button.k-upload-selected { display: none }
+
+#preview {
+    width: 200px;
+    height: 200px;
+    margin: 15px auto;
+    display: block;
+    border: 1px solid;
+    border-radius: 5px;
+}

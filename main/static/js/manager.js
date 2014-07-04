@@ -34,9 +34,6 @@ $(document).ready(function () {
                     id: "id",
                     fields: { name: {type: "string"}, weight: {type: "number"} }
                 }
-            },
-            requestEnd: function (e) {
-
             }
         },
         toolbar: [
@@ -181,49 +178,31 @@ $(document).ready(function () {
             statusWarning: "Внимание",
             uploadSelectedFiles: "Загрузить"
         },
-        template: kendo.template($('#fileTemplate').html()),
+        //template: kendo.template($('#fileTemplate').html()),
         files: [],
-        intellect_prop_id: 0,
+        menu_id: 0,
         success: function (e) {
             if (e.operation == "upload") {
-                //intellectual_property_window.close();
-                var that = this;
-                $.post(MANAGER_BASE_URL + "file/get_list/",
-                    {item: JSON.stringify({intellectual_property_id: this.options.intellect_prop_id})},
-                    function (data) {
-                        that.wrapper.find("ul.k-upload-files.k-reset").remove();
-//                                that.wrapper.find("li.k-file.k-file-success").remove();
-                        that._renderInitialFiles(data);
-                    });
+                $change_menu_window.modal("hide");
+                var data = menu.dataSource;
+                var item = data.get(e.response.id);
+                if (item) {
+                    item.image = e.response.image;
+                }
+                reset_file_uploader(); ///FIXME: убрать функцию
             }
         },
         select: function (e) {
         },
         upload: function (e) {
-            var f = e.files;
-            for (var i = 0; i < f.length; i++) {
-                for (var j = i + 1; j < f.length; j++) {
-                    if ((f[i].name == f[j].name) &&
-                        (f[i].size == f[j].size) &&
-                        (f[i].extension == f[j].extension)) {
-                        ///noty_error("Не загружайте одинаковые файлы!");
-                        e.preventDefault();
-                        return;
-                    }
-                }
-            }
-//                console.log(e);
-            e.data = {item: JSON.stringify({intellectual_property_id: this.options.intellect_prop_id})};
+            e.data = {item: JSON.stringify({menu_id: this.options.menu_id})};
         },
         remove: function (e) {
             var files = e.files;
             e.data = {item: JSON.stringify(files)};
-            if (!confirm("Вы уверены, что хотите удалить " + files[0].name + "?")) {
-                e.preventDefault();
-            }
         }
     }).data("kendoUpload");
-    $file_uploader.wrapper.removeClass("k-upload-empty").css("margin", "0 36px 15px");
+    $file_uploader.wrapper.removeClass("k-upload-empty"); //.css("margin", "0 36px 15px");
 
     function reset_file_uploader() {
         $file_uploader.wrapper.find("strong.k-upload-status.k-upload-status-total").empty();
@@ -245,26 +224,18 @@ $(document).ready(function () {
                 type: "POST"
             },
             parameterMap: function (options, operation) {
-//                if (operation == "read") {
-//                    return {category_id: category_id};
-//                }
-//                if (options) {
-//                    options.category_id = category_id;
-//                    return {item: kendo.stringify(options)};
-//                }
+                if (operation !== "read" && options) {
+                    return {item: kendo.stringify(options)};
+                }
             }
         },
         group: { field: "category.name" },
-//        schema: {
-//            model: {
-//                id: "id",
-//                fields: { name: {
-//                    validation: {
-//                        required: { message: "Поле не может быть пустым" }
-//                    }
-//                }, tel: {}, mail: {} }
-//            }
-//        },
+        schema: {
+            model: {
+                id: "id",
+                fields: { name: {type: "string"}, description: {type: "string"}, price: {type: "number"} }
+            }
+        },
         requestEnd: function (e) {
         }
     });
@@ -287,14 +258,22 @@ $(document).ready(function () {
                 {  name: "menu-edit",
                     click: function (e) {
                         $(".k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg").hide();
+                        var data = categories.dataSource.data();
+                        if (data.length === 0) {
+                            return false;
+                        }
                         var dataItem = this.dataItem($(e.currentTarget).closest("tr"));
-//                        categories_model.set("is_edit", true);
-//                        categories_model.set("o", {
-//                            id: dataItem.id,
-//                            name: dataItem.name,
-//                            weight: dataItem.weight
-//                        });
-//                        $change_categories_window.modal("show");
+                        menu_model.set("is_edit", true);
+                        menu_model.set("categories", data);
+                        preview.attr("src", dataItem.image);
+                        menu_model.set("o", {
+                            id: dataItem.id,
+                            name: dataItem.name,
+                            description: dataItem.description,
+                            price: dataItem.price,
+                            category: dataItem.category
+                        });
+                        $change_menu_window.modal("show");
                     },
                     template: "<a class='k-button k-grid-menu-edit'><span class='k-icon k-edit '></span></a>"
                 }
@@ -311,7 +290,9 @@ $(document).ready(function () {
         ]
     }).data("kendoGrid");
 
-    window.menu_model = kendo.observable({ //FIXME: window
+
+    var preview = $("#preview");
+    var menu_model = kendo.observable({
         is_edit: false,
         categories: [],
         o: {
@@ -348,7 +329,8 @@ $(document).ready(function () {
         }
         $(".k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg").hide();
         menu_model.set("is_edit", false);
-        menu_model.set("categories",data);
+        preview.attr("src", "/media/default.png"); /// FIXME: hard string
+        menu_model.set("categories", data);
         menu_model.set("o", {
             id: 0,
             name: "",
@@ -360,22 +342,30 @@ $(document).ready(function () {
     });
 
     function menu_response_listener(d) {
-        console.log(d);
-//        var data = categories.dataSource;
-//        var item = data.get(d.id);
-//        if (item) {
-//            item.name = d.name;
-//            item.weight = d.weight;
-//        } else {
-//            item = {
-//                id: d.id,
-//                name: d.name,
-//                weight: d.weight
-//            };
-//            data.add(item);
-//        }
-//        categories.refresh();
-//        $change_categories_window.modal("hide");
+        $file_uploader.options.menu_id = d.id;
+        var is_upload = $("#change_menu_window button.k-button.k-upload-selected").click();
+        if (is_upload.length == 0) {
+            $change_menu_window.modal("hide");
+        }
+        var data = menu.dataSource;
+        var item = data.get(d.id);
+        if (item) {
+            item.name = d.name;
+            item.description = d.description;
+            item.price = d.price;
+            item.category = d.category;
+        } else {
+            item = {
+                id: d.id,
+                name: d.name,
+                description: d.description,
+                price: d.price,
+                category: d.category
+            };
+            data.add(item);
+        }
+        menu.refresh();
+        //$change_menu_window.model("hide");
     }
 
     $("#menu_save").click(function (e) {
@@ -390,23 +380,11 @@ $(document).ready(function () {
         }
         return false;
     });
-//
-//    detailRow.find(".add_reload").click(function (e) {
-//        department.dataSource.read();
-//        department.refresh();
-//        return false;
-//    });
+
+    $(".reload_menu").click(function (e) {
+        menu.dataSource.read();
+        menu.refresh();
+        return false;
+    });
 
 });
-
-function addExtensionClass(extension) {
-    switch (extension) {
-        case '.jpg':
-        case '.jpeg':
-        case '.png':
-        case '.gif':
-            return "img-file";
-        default:
-            return "default-file";
-    }
-}

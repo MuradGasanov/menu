@@ -21,7 +21,7 @@ class Menu(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField(default="")
     price = models.FloatField(default=0)
-    image = models.ImageField(upload_to=get_upload_folder, default="default.png")
+    image = models.ImageField(upload_to=get_upload_folder, default="default.png", max_length=300)
     category = models.ForeignKey(Categories)
 
 
@@ -31,8 +31,9 @@ def auto_delete_file_on_delete(sender, instance, **kwargs):
     Удалить файл при удаление соответствуюшей записи из БД
     """
     if instance.image:
-        if os.path.isfile(instance.image.path):
-            os.remove(instance.image.path)
+        if instance.image.name != "default.png":
+            if os.path.isfile(instance.image.path):
+                os.remove(instance.image.path)
 
 
 @receiver(models.signals.pre_save, sender=Menu)
@@ -44,6 +45,8 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
         return False
     try:
         old_file = Menu.objects.get(pk=instance.pk).image
-        os.remove(old_file)
+        if old_file.name != "default.png" and old_file.name != instance.image.name:
+            if os.path.isfile(old_file.path):
+                os.remove(old_file.path)
     except Menu.DoesNotExist:
         return False

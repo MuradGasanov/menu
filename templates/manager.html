@@ -140,10 +140,16 @@
                                        data-bind="value: o.price"
                                        style="width: 100%">
                             </div>
+                            <div class="k-edit-label">
+                                <label>Превью:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <img id="preview" src="/media/default.png" alt="Превью"/>
+                                <input type="file" name="file_uploader" id="file_uploader" />
+                            </div>
                         </div>
                     </div>
                     <div class="clear"></div>
-                    <input type="file" name="file_uploader" id="file_uploader" />
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
                         <button id="menu_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
@@ -152,15 +158,5 @@
             </div>
         </div>
     </div>
-
-    <script id="fileTemplate" type="text/x-kendo-template">
-        <span class='k-progress'></span>
-        <div class='file-wrapper' data-type='#=files[0].extension#' data-file-url='#=files[0].file#'>
-            <span class='file-icon #=addExtensionClass(files[0].extension)#'></span>
-            <h4 class='file-heading file-name-heading'>Имя: <a class="">#=name#</a></h4>
-            <h4 class='file-heading file-size-heading'>Размер: #=Math.round((size/1024)*100)/100# Кбайт</h4>
-            <button type='button' class='k-upload-action'></button>
-        </div>
-    </script>
 
 {% endblock %}
