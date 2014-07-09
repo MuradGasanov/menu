@@ -13,27 +13,49 @@
     <script src="{% static "js/manager.js" %}"></script>
 {% endblock %}
 {% block content %}
-    <div id="tabs">
-        <ul>
-            <li class="k-state-active">
-                <i class="fa fa-book"></i> Меню
-            </li>
-            <li>
-                <i class="fa fa-users"></i> Заказы
-            </li>
-            <li>
-                <i class="fa fa-mobile-phone"></i> СМС рассылки
-            </li>
-        </ul>
-        <div>
-            <div id="categories" style="margin-bottom: 15px;"></div>
-            <div id="menu"></div>
-        </div>
-        <div>
-            Заказы
-        </div>
-        <div>
-            СМС рассылки
+    <div class="container">
+        <nav class="navbar navbar-default" role="navigation">
+            <div class="container-fluid">
+                <a id="logo" href="#">
+                    <img src="{% static "img/manager.png" %}" alt="Manager" />
+                </a>
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle" data-toggle="collapse"
+                            data-target="#bs-example-navbar-collapse-1">
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="#">Менеджер </a>
+                </div>
+                <ul class="nav navbar-nav navbar-right">
+                    <li><a id="logout" href="#">Выход</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div id="tabs">
+            <ul>
+                <li class="k-state-active">
+                    <i class="fa fa-book"></i> Меню
+                </li>
+                <li>
+                    <i class="fa fa-users"></i> Заказы
+                </li>
+                <li>
+                    <i class="fa fa-mobile-phone"></i> СМС рассылки
+                </li>
+            </ul>
+            <div>
+                <div id="categories" style="margin-bottom: 15px;"></div>
+                <div id="menu"></div>
+            </div>
+            <div>
+                Заказы
+            </div>
+            <div>
+                СМС рассылки
+            </div>
         </div>
     </div>
 

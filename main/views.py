@@ -124,7 +124,7 @@ class Menu():
 
     @staticmethod
     def read(request):
-        menu = models.Menu.objects.all()
+        menu = models.Menu.objects.all() #.order_by("category__weight")
         menu_list = []
         for m in menu:
             menu_list.append({
@@ -205,3 +205,33 @@ class Menu():
         menu.delete()
 
         return HttpResponse(item.get("id"), content_type="application/json")
+
+########################################################################################################################
+
+
+def read_menu(request):
+    categories = models.Categories.objects.all()
+
+    menu_list = []
+    for c in categories:
+        menu = models.Menu.objects.filter(category=c.id)
+        if menu:
+            menu_list.append({
+                "id": c.id,
+                "type": "category",
+                "name": c.name
+            })
+            for m in menu:
+                menu_list.append({
+                    "id": m.id,
+                    "type": "menu_item",
+                    "name": m.name,
+                    "description": m.description,
+                    "price": m.price,
+                    "image": m.image.url
+                })
+
+    if menu_list:
+        return HttpResponse(json.dumps(menu_list), content_type="application/json")
+    else:
+        return HttpResponse("[]", content_type="application/json")

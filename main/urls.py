@@ -23,7 +23,8 @@ urlpatterns = patterns('main.views',
                        url(r'^'+MANAGER_BASE_URL+'menu/update/$', Menu.update),
                        url(r'^'+MANAGER_BASE_URL+'menu/destroy/$', Menu.destroy),
                        url(r'^'+MANAGER_BASE_URL+'menu/image/set/$', Menu.image_set),
-
                        # url(r'^'+MANAGER_BASE_URL+'menu/image/delete/$', Menu.image_delete),
+
+                       url(r'^menu/$', read_menu),
 
                        )

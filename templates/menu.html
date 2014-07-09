@@ -1,1 +1,153 @@
-menu
+{% extends "base.html" %}
+{% load staticfiles %}
+{% block title %}Менеджер{% endblock %}
+{% block style %}
+    <link rel="stylesheet" href="{% static "fontawesome/css/font-awesome.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/noty.css" %}"/>
+    <link rel="stylesheet" href="{% static "css/menu.css" %}"/>
+{% endblock %}
+{% block script %}
+    <script src="{% static "kendo/js/cultures/kendo.culture.ru-RU.min.js" %}"></script>
+    <script src="{% static "kendo/js/kendo.web.min.js" %}"></script>
+    <script src="{% static "js/jquery.scrollTo.min.js" %}"></script>
+    <script src="{% static "js/noty.js" %}"></script>
+    <script src="{% static "js/menu.js" %}"></script>
+{% endblock %}
+{% block content %}
+
+ <div id="application"></div>
+
+        <script type="text/x-kendo-template" id="layout-template">
+            <div id="wrapper">
+                <div id="header">
+                    <h1 class="logo"><a href="#/"></a></h1>
+
+                    <a id="cart-info" href="#">Корзина<span><span data-bind="text: cart.contentsCount"></span> </span></a>
+                </div>
+
+                <p data-bind="visible: cart.cleared"> Thank you for your order!</p>
+
+                <div id="main-section">
+                    <section id="pre-content"></section>
+                    <section id="content"></section>
+                </div>
+
+                <div id="footer">
+                    <span id="copyright">Copyright &#169; 2014 All rights reserved.</span>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-kendo-template" id="cart-preview-template">
+            <div id="shop-info" data-bind="attr: { class: cartContentsClass }">
+
+                <ul data-role="listview" data-bind="source: cart.contents" data-template="cart-item" id="shop-list"></ul>
+
+                <div id="shopping-cart">
+                    <h3>общая<br/>сумма заказа</h3>
+                    <p class="total-price" data-bind="html: totalPrice"></p>
+                    <a id="empty-cart" href="#" data-bind="click: emptyCart">Очистить</a><a id="checkout" href="#/checkout">Заказать</a>
+                </div>
+            </div>
+        </script>
+
+        <script type="text/x-kendo-template" id="index-template">
+            <ul data-role="listview" data-bind="source: items" data-template="item" id="main"></ul>
+            <ul data-role="listview" data-bind="source: items" data-template="title" id="titles"></ul>
+        </script>
+
+        <script type="text/x-kendo-template" id="checkout-template">
+			<div id="checkout-top-image"></div>
+
+			<div id="details-checkout">
+				<h1>Order Details</h1>
+				<a href="#" class="close">Закрыть</a>
+				<table>
+					<thead>
+						<tr>
+							<th>Название</th>
+							<th>Кол-во</th>
+							<th>Цена ед.</th>
+						</tr>
+					</thead>
+					<tbody data-role="listview" data-bind="source: cart.contents" data-template="large-cart-item">
+					</tbody>
+				</table>
+				<p id="total-checkout"><em>цена общ.:</em><span data-bind="text: totalPrice"></span></p>
+				<a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a><button class="order-now" data-bind="click: proceed">order now!</button>
+			</div>
+
+			<div id="checkout-bottom-image"></div>
+        </script>
+
+        <script type="text/x-kendo-template" id="detail-template">
+
+			<div id="details-top-image">
+				<a class="close" href="#">Закрыть</a>
+			</div>
+
+			<div id="details">
+                <a data-bind="attr: {href: previousHref }" id="navigate-prev"></a><div
+				id="detail-info"><img class="main-image"
+				data-bind="attr: { src: imgUrl }" alt="current.name" title="current.name"/><div
+				id="description">
+						<h1 data-bind="text: current.name"></h1>
+						<p data-bind="text: current.description"></p>
+						<div id="details-total">
+							<p id="price-quantity" data-bind="text: price"></p>
+							<button class="buy" data-bind="click: addToCart">В корзину</button>
+						</div>
+					</div>
+				</div><div id="nutrition-info"><h2>Состав</h2>
+						<dl>
+
+						</dl>
+				</div><a data-bind="attr: { href: nextHref }" id="navigate-next"></a>
+			</div>
+
+            <div id="details-bottom-image"></div>
+        </script>
+
+        <script type="text/x-kendo-template" id="large-cart-item">
+            <tr>
+                <td> <div class="cart-image-wrapper"><img src="#= item.image #" /></div> <span class="product-name" data-bind="text: item.name"></span></td>
+                <td><input type="text" data-role="numerictextbox" data-min="0" data-max="20" data-format="##" data-bind="value: quantity" style="width: 80px"></td>
+                <td><p class="table-price" data-bind="text: itemPrice"><p></td>
+            </tr>
+        </script>
+
+        <script type="text/x-kendo-template" id="cart-item">
+            <li class="selected-products-list">
+                <a data-bind="click: removeFromCart" class="view-selected-items"><img
+                    width="100" height="100"
+                    src="#= item.image #"  /></a>
+                <span class="selected-image-price"><span data-bind="text: quantity"></span>x<span data-bind="text: itemPrice"></span></span>
+            </li>
+        </script>
+
+        <script type="text/x-kendo-template" id="item">
+            # if (type === "menu_item") { #
+            <li class="products">
+                <a class="view-details" href="\#/menu/#: id #">
+                    <img class="main-image" src="#= image #"  alt="#: name#" title="#: name #" />
+                    <strong data-bind="text: name"></strong>
+                    <span class="price"><span data-bind="text: price"></span><span>р.</span></span>
+                </a>
+
+                <button class="add-to-cart" data-bind="click: addToCart">В корзину</button>
+            </li>
+            # } else { #
+            <li id="menu_#=id#" class="category">#=name#</li> # } #
+        </script>
+
+        <script type="text/x-kendo-template" id="title">
+            # if (type === "category") { #
+            <li class="title">
+                <a href="\#" data-id="menu_#=id#">#= name#</a>
+            </li>
+            # } else { #
+            <span></span>
+            # } #
+        </script>
+
+{% endblock %}

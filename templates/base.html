@@ -9,7 +9,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="stylesheet" href="{% static "css/reset.css" %}"/>
+{#    <link rel="stylesheet" href="{% static "css/reset.css" %}"/>#}
 
     <link rel="stylesheet" href="{% static "bootstrap/css/bootstrap.min.css" %}"/>
 
@@ -30,35 +30,9 @@
 </head>
 <body>
 
-<div class="container">
-    {% block navbar %}
-        <nav class="navbar navbar-default" role="navigation">
-            <div class="container-fluid">
-                <a id="logo" href="#">
-                    <img src="{% static "img/manager.png" %}" alt="Manager" />
-                </a>
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle" data-toggle="collapse"
-                            data-target="#bs-example-navbar-collapse-1">
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">Менеджер </a>
-                </div>
-                <ul class="nav navbar-nav navbar-right">
-                    <li><a id="logout" href="#">Выход</a></li>
-                </ul>
-            </div>
-        </nav>
-    {% endblock %}
+{% block content %}
+{% endblock %}
 
-    {% block content %}
-    {% endblock %}
-
-</div>
-
-</div>
 <script src="{% static "bootstrap/js/bootstrap.min.js" %}"></script>
 {% block footer_script %}
 {% endblock %}
