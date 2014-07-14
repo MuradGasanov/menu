@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block title %}Менеджер{% endblock %}
+{% block title %}Меню{% endblock %}
 {% block style %}
     <link rel="stylesheet" href="{% static "fontawesome/css/font-awesome.css" %}"/>
     <link rel="stylesheet" href="{% static "css/noty.css" %}"/>
@@ -53,14 +53,14 @@
 
         <script type="text/x-kendo-template" id="index-template">
             <ul data-role="listview" data-bind="source: items" data-template="item" id="main"></ul>
-            <ul data-role="listview" data-bind="source: items" data-template="title" id="titles"></ul>
+            <ul id="titles"></ul>
         </script>
 
         <script type="text/x-kendo-template" id="checkout-template">
 			<div id="checkout-top-image"></div>
 
 			<div id="details-checkout">
-				<h1>Order Details</h1>
+				<h1>Оформление заказа</h1>
 				<a href="#" class="close">Закрыть</a>
 				<table>
 					<thead>
@@ -70,14 +70,54 @@
 							<th>Цена ед.</th>
 						</tr>
 					</thead>
-					<tbody data-role="listview" data-bind="source: cart.contents" data-template="large-cart-item">
+					<tbody id="checkout-list" data-role="listview" data-bind="source: cart.contents" data-template="large-cart-item">
 					</tbody>
 				</table>
 				<p id="total-checkout"><em>цена общ.:</em><span data-bind="text: totalPrice"></span></p>
-				<a class="cancel-order" href="#" data-bind="click: emptyCart">cancel order</a><button class="order-now" data-bind="click: proceed">order now!</button>
+				<a class="cancel-order" href="#" data-bind="click: emptyCart">Отменить заказ</a><button class="order-now" data-bind="click: proceed">Продолжить</button>
 			</div>
 
 			<div id="checkout-bottom-image"></div>
+        </script>
+
+        <script type="text/x-kendo-template" id="order-template">
+			<div id="order-top-image"></div>
+
+			<div id="details-order">
+				<h1>Оформление заказа</h1>
+				<a href="#" class="close">Закрыть</a>
+{#                <div class="order-body">#}
+                    <div class="k-edit-form-container" style="width: inherit;">
+                        <div class="k-edit-label">
+                            <label>Номер телефона<span class="required">*</span>:</label>
+                        </div>
+                        <div class="k-edit-field">
+                             <input data-role="maskedtextbox"
+                                           data-mask="+7 (999) 000-00-00"
+                                           data-bind="value: phoneNumber"
+                                           style="width: 100%">
+                        </div>
+                        <div class="k-edit-label">
+                            <label>Адрес<span class="required">*</span>:</label>
+                        </div>
+                        <div class="k-edit-field">
+                                <textarea placeholder="Адрес доставки" class="k-textbox" data-bind="value: address"
+                                          style="width: 100%; height: 50px;"> </textarea>
+                        </div>
+                        <div class="k-edit-label">
+                            <label>Комментарий:</label>
+                        </div>
+                        <div class="k-edit-field">
+                                <textarea placeholder="Комментарий к заказу" class="k-textbox" data-bind="value: comments"
+                                          style="width: 100%; height: 100px;"> </textarea>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+{#                </div>#}
+				<button class="order-now" data-bind="click: order">Заказать</button>
+			</div>
+
+			<div id="order-bottom-image"></div>
         </script>
 
         <script type="text/x-kendo-template" id="detail-template">
@@ -138,16 +178,6 @@
             </li>
             # } else { #
             <li id="menu_#=id#" class="category">#=name#</li> # } #
-        </script>
-
-        <script type="text/x-kendo-template" id="title">
-            # if (type === "category") { #
-            <li class="title">
-                <a href="\#" data-id="menu_#=id#">#= name#</a>
-            </li>
-            # } else { #
-            <span></span>
-            # } #
         </script>
 
 {% endblock %}

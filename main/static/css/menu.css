@@ -27,7 +27,7 @@ border:0;
 body {
     font: 75% 'Droid Sans', sans-serif;
     height: 100%;
-    background: #0c0c0c url('../img/menu/background-image.png')repeat left top;
+    background: #F3F1E8 url('../img/menu/halftone.png')repeat left top;
 }
 
 h1, h2, h3, #main-nav, #main-nav li, ul, ul li {
@@ -42,8 +42,10 @@ html .k-listview {
 
 #wrapper{
     margin: 60px auto 0;
-    width: 1000px;
+    width: 1040px;
     height: auto;
+    padding: 20px;
+    background: #fff url('../img/menu/halftone-white.png')repeat left top;
 }
 
 /*header section*/
@@ -62,7 +64,7 @@ h1 a{
 
 #header{
     padding-bottom: 40px;
-    border-bottom: 1px solid #535353;
+    border-bottom: 1px solid #ab7829;
 }
 
 #logo-pic{
@@ -70,14 +72,15 @@ h1 a{
 }
 
 #cart-info {
-    float:right;
-    height: 28px;
+    float: right;
+    height: 29px;
     line-height: 28px;
     vertical-align: middle;
     font-size: 10px;
+    font-weight: 700;
     text-transform: uppercase;
-    color: #bababa;
-    background-color: #000000;
+    color: #ab7829;
+    background-color: #F3F1E8;
     padding-left: 10px;
     letter-spacing: 1px;
 }
@@ -117,17 +120,17 @@ h1 a{
 }
 
 #cart-info span:before {
-    content:"";
+    content: "";
     display: block;
     width: 0;
     height: 0;
     position: absolute;
     left: 0;
     top: 0;
-    border-top: 14px solid #000;
+    border-top: 14px solid #F3F1E8;
     border-right: 14px solid transparent;
     border-bottom: 14px solid transparent;
-    border-left: 14px solid #000;
+    border-left: 14px solid #F3F1E8;
 }
 
 #cart-info span:after {
@@ -152,7 +155,7 @@ h1 a{
 }
 
 #shop-list{
-    background: #000000;
+    background: #F3F1E8;
     width: 800px;
     float: left;
     text-align: right;
@@ -165,7 +168,7 @@ h1 a{
 }
 
 #shop-info {
-    background: #000000;
+    background: #F3F1E8;
     margin-bottom: 20px;
     overflow: hidden;
     -webkit-transition: all 200ms ease-out;
@@ -183,11 +186,10 @@ h1 a{
 }
 
 .selected-image-price{
-    color: #ffffff;
+    color: #ab7829;
     font-size: 11px;
     line-height: 20px;
     vertical-align: middle;
-
 }
 
 .button{
@@ -196,7 +198,7 @@ h1 a{
 }
 
 h3{
-    color: #bababa;
+    color: #FFFFFF;
     font-size: 10px;
     text-transform: uppercase;
 }
@@ -206,8 +208,8 @@ h3{
     text-align: right;
     float: right;
     width: 200px;
-    background-color: #1f1f1f;
-    height: 122px;
+    background-color: #D5A65F;
+    height: 120px;
 }
 
 #shopping-cart h3, #shopping-cart p{
@@ -233,8 +235,8 @@ h3{
     vertical-align: middle;
     font-size: 10px;
     text-transform: uppercase;
-    color: #ff3170;
-    background-color: #1f1f1f;
+    color: #F3F1E8;
+    background-color: #ab7829;
     letter-spacing: 1px;
 }
 
@@ -266,17 +268,17 @@ h3{
 }
 
 #checkout:before {
-    content:"";
+    content: "";
     display: block;
     width: 0;
     height: 0;
     position: absolute;
     left: 0;
     top: 0;
-    border-top: 14px solid #1f1f1f;
+    border-top: 14px solid #ab7829;
     border-right: 14px solid transparent;
     border-bottom: 14px solid transparent;
-    border-left: 14px solid #1f1f1f;
+    border-left: 14px solid #ab7829;
 }
 
 #checkout:hover{
@@ -319,7 +321,7 @@ h3{
 }
 
 .view-selected-items:hover:after {
-    background-color:  rgba(0,0,0,0.75);
+    background-color: rgba(213, 166, 95, 0.65);
     background-image: url('../img/menu/remove-icon.png');
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -350,11 +352,11 @@ h3{
 }
 
 .title a{
-    color: #C7C7C7;
+    color: #ab7829;
 }
 
 .title a:hover{
-    color: #fff;
+    color: #555;
 }
 
 .products {
@@ -362,13 +364,13 @@ h3{
     width: 200px;
     margin-bottom: 20px;
     padding-bottom: 62px;
-    background: #fff url('../img/menu/item-separator.png') repeat-y right top;
+    background: #F3F1E8 url('../img/menu/item-separator.png') repeat-y right top;
     text-align: center;
     float: left;
 }
 
 .category {
-    color: white;
+    color: #ab7829;
     font-size: 20px;
     display: block;
     clear: left;
@@ -397,7 +399,7 @@ h3{
 }
 
 .view-details:hover:after {
-    background-color:  rgba(0,0,0,0.75);
+    background-color: rgba(213, 166, 95, 0.65);
     background-image: url('../img/menu/arrow-right.png');
     background-repeat: no-repeat;
     background-position: 50% 50%;
@@ -434,14 +436,15 @@ h3{
     position: absolute;
     bottom: 0;
     left: 0;
+    font-weight: 700;
     height: 37px;
     width: 200px;
     padding-bottom: 3px;
-    color: #d60041;
+    color: #D5A65F;
     font-size: 12px;
     text-transform: uppercase;
     background-color: transparent;
-    border-top: 1px dotted #a6a6a6;
+    border-top: 1px dotted #D5A65F;
 }
 
 .add-to-cart:before{
@@ -457,7 +460,7 @@ h3{
     vertical-align: middle;
 }
 .add-to-cart:hover {
-    background-color: #d60041;
+    background-color: #D5A65F;
     color: #fff;
 }
 
@@ -510,18 +513,18 @@ h3{
     width: 600px;
     height: 200px;
     display: inline-block;
-    background: #fff url('../img/menu/item-separator.png') repeat-y right top;
+    background: #fff url('../img/menu/item-separator-black.png') repeat-y right top;
 }
 
 #navigate-prev {
     display: inline-block;
     height: 200px;
     width: 100px;
-    background: #000 url('../img/menu/nav-prev.png') no-repeat center;
+    background: #D5A65F url('../img/menu/nav-prev.png') no-repeat center;
 }
 
 #navigate-prev:hover{
-    background: #d60041 url('../img/menu/nav-prev.png') no-repeat center;
+    background: #ab7829 url('../img/menu/nav-prev.png') no-repeat center;
 }
 
 #description{
@@ -584,7 +587,7 @@ p#details-total-price {
 }
 
 p#details-total-price em{
-    color: #787878;
+    color: #555;
     font-size: 10px;
     font-style:normal;
     font-weight:normal;
@@ -685,15 +688,15 @@ p#details-total-price span{
     width: 45px;
 }
 
+#navigate-next:hover {
+    background: #ab7829 url('../img/menu/nav-next.png') no-repeat center;
+}
+
 #navigate-next {
     display: inline-block;
     height: 200px;
     width: 100px;
-    background: #000 url('../img/menu/nav-next.png') no-repeat center;
-}
-
-#navigate-next:hover{
-    background: #d60041 url('../img/menu/nav-next.png') no-repeat center;
+    background: #D5A65F url('../img/menu/nav-next.png') no-repeat center;
 }
 
 
@@ -715,6 +718,38 @@ p#details-total-price span{
     margin-bottom: 20px;
 }
 
+#order-top-image{
+    background: url('../img/menu/preview.png') no-repeat top left;
+    height: 100px;
+}
+
+#details-order {
+    background: #F3F1E8;
+    text-align: right;
+    position: relative;
+}
+
+#details-order h1{
+    font-size: 36px;
+    color: #2e2e2e;
+    padding-top: 50px;
+    padding-left: 100px;
+    padding-bottom: 53px;
+    text-align: left;
+}
+
+#details-order .k-edit-form-container {
+    font-size: 13px;
+    padding-left: 100px;
+    padding-right: 100px;
+}
+
+#order-bottom-image{
+    background: url('../img/menu/preview.png') no-repeat bottom left;
+    height: 100px;
+    margin-bottom: 20px;
+}
+
 #details-bottom-image{
     background: url('../img/menu/preview.png') no-repeat bottom left;
     height: 200px;
@@ -722,9 +757,13 @@ p#details-total-price span{
 }
 
 #details-checkout{
-    background: #fff;
+    background: #F3F1E8;
     text-align: right;
     position: relative;
+}
+
+#checkout-list {
+    background-color: transparent;
 }
 
 #details-checkout h1
@@ -873,20 +912,20 @@ table tbody td:first-child + td + td p{
     height: 48px;
     width: 131px;
     display: inline-block;
-    color: #d60041;
+    color: #787878;
     font-size: 13px;
     line-height: 48px;
     vertical-align: middle;
     text-transform: uppercase;
-    background-color: #fff;
+    background-color: #F3F1E8;
     text-align: center;
     margin-bottom: 49px;
     margin-top: 54px;
 }
 
 .cancel-order:hover {
-    text-decoration:underline;
-    color: #d60041;
+    text-decoration: underline;
+    color: #1A1A1A;
 }
 
 .cancel-order, .cancel-order:hover {
@@ -970,7 +1009,7 @@ table tbody td:first-child + td + td p{
 /*footer section*/
 #footer{
     position: relative;
-    border-top: 1px solid #535353;
+    border-top: 1px solid #ab7829;
     font-size: 12px;
     padding-bottom: 60px;
 }

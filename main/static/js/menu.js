@@ -61,7 +61,7 @@ var cart = kendo.observable({
             i = 0;
 
         for (; i < length; i++) {
-            price += parseInt(contents[i].item.price) * contents[i].quantity;
+            price += parseFloat(contents[i].item.price) * contents[i].quantity;
         }
 
         return kendo.format("{0:c}", price);
@@ -96,6 +96,17 @@ var cartPreviewModel = kendo.observable({
     },
 
     proceed: function (e) {
+        //this.get("cart").clear();
+        //sushi.navigate("/");
+        layout.showIn("#content", order);
+        console.log(e);
+    }
+});
+
+var orderModel = kendo.observable({
+    cart: cart,
+
+    proceed: function (e) {
         this.get("cart").clear();
         sushi.navigate("/");
     }
@@ -112,11 +123,21 @@ var indexModel = kendo.observable({
 
 var detailModel = kendo.observable({
     imgUrl: function () {
-        return this.get("current").image
+        var current = this.get("current");
+        if (current) {
+            return current.image
+        } else {
+            return ""
+        }
     },
 
     price: function () {
-        return kendo.format("{0:c}", this.get("current").price);
+        var current = this.get("current");
+        if (current) {
+            return kendo.format("{0:c}", this.get("current").price);
+        } else {
+            return kendo.format("{0:c}", 0);
+        }
     },
 
     addToCart: function (e) {
@@ -124,11 +145,19 @@ var detailModel = kendo.observable({
     },
 
     setCurrent: function (itemID) {
-        this.set("current", items.get(itemID));
+        var current = items.get(itemID);
+        if (current) {
+            this.set("current", current);
+        } else {
+            return ""; ///FIXME: show menu
+        }
     },
 
     previousHref: function () {
         var index = items.indexOf(this.get("current"));
+        if (index == -1) {
+            return "#"
+        }
         do {
             index = index - 1;
             if (index < 0) index = items.total() - 1;
@@ -141,6 +170,9 @@ var detailModel = kendo.observable({
 
     nextHref: function () {
         var index = items.indexOf(this.get("current"));
+        if (index == -1) {
+            return "#"
+        }
         do {
             index = index + 1;
             if (index > items.total() - 1) index = 0;
@@ -161,6 +193,7 @@ var layout = new kendo.Layout("layout-template", { model: layoutModel });
 var cartPreview = new kendo.Layout("cart-preview-template", { model: cartPreviewModel });
 var index = new kendo.View("index-template", { model: indexModel });
 var checkout = new kendo.View("checkout-template", {model: cartPreviewModel });
+var order = new kendo.View("order-template", {model: orderModel });
 var detail = new kendo.View("detail-template", { model: detailModel });
 
 var sushi = new kendo.Router({
@@ -183,10 +216,8 @@ sushi.route("/checkout", function () {
 sushi.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
 
-    items.fetch(function (e) {
-        detailModel.setCurrent(itemID);
-        layout.showIn("#content", detail);
-    });
+    detailModel.setCurrent(itemID);
+    layout.showIn("#content", detail);
 });
 
 $(function () {
@@ -195,7 +226,7 @@ $(function () {
     $('#titles').affix({
         offset: {
             top: function () {
-                return $("#content").offset().top;
+                return $("#content").offset().top - 5 /* top: 5px; */;
             },
             bottom: 100
         }
@@ -204,4 +235,14 @@ $(function () {
         $('body').scrollTo("#"+id);
         return false;
     }).css("top", "5px");
+
+    items.fetch(function(e) {
+        $.each(this.data(), function(i, e) {
+            if (e.type == "category") {
+                $('<li class="title"><a href="#" data-id="menu_'+ e.id+'">'+ e.name+'</a></li>').appendTo("#titles");
+                console.log(e.name, e.id);
+            }
+        })
+    });
+
 });
