@@ -239,7 +239,7 @@ $(function () {
     items.fetch(function(e) {
         $.each(this.data(), function(i, e) {
             if (e.type == "category") {
-                $('<li class="title"><a href="#" data-id="menu_'+ e.id+'">'+ e.name+'</a></li>').appendTo("#titles");
+                $('<li class="title"><a href="#" data-id="menu'+ e.id+'">'+ e.name+'</a></li>').appendTo("#titles");
                 console.log(e.name, e.id);
             }
         })

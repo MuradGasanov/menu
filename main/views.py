@@ -217,7 +217,7 @@ def read_menu(request):
         menu = models.Menu.objects.filter(category=c.id)
         if menu:
             menu_list.append({
-                "id": c.id,
+                "id": -c.id,
                 "type": "category",
                 "name": c.name
             })
