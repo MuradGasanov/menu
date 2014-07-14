@@ -39,7 +39,7 @@ MANAGERS = ADMINS
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '$6^r1xbushd43$*hpinaib!0yz(^0oru2g2$89lq6x4o=y^)+x'
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', '0.0.0.0', 'menu.kurukukuru.ru']
 
 # Application definition
 
