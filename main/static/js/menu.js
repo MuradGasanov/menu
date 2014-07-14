@@ -106,7 +106,7 @@ var cartPreviewModel = kendo.observable({
 var orderModel = kendo.observable({
     cart: cart,
 
-    proceed: function (e) {
+    order: function (e) {
         this.get("cart").clear();
         sushi.navigate("/");
     }
