@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 import os
 import socket
 
-if socket.gethostname() in ("murad-pc",):
+if socket.gethostname() in ("murad-pc", "user-pc"):
     DEBUG = True
 else:
     DEBUG = False

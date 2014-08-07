@@ -148,12 +148,16 @@ $(document).ready(function () {
         return false;
     });
 
+    $(".show_categories").click(function () {
+        $("#categories_window").modal();
+    });
+
     $(".expand_categories").click(function () {
-        categories.expandRow(categories.tbody.find("tr.k-master-row"));
+
     });
 
     $(".collapse_categories").click(function () {
-        categories.collapseRow(categories.tbody.find("tr.k-master-row"));
+
     });
 
     var $file_uploader = $("#file_uploader").kendoUpload({
@@ -189,7 +193,7 @@ $(document).ready(function () {
                 if (item) {
                     item.image = e.response.image;
                 }
-                reset_file_uploader(); ///FIXME: убрать функцию
+                reset_file_uploader(); ///FIXME: убрать функцию, она вызывается только сдесь
             }
         },
         select: function (e) {

@@ -47,7 +47,6 @@
                 </li>
             </ul>
             <div>
-                <div id="categories" style="margin-bottom: 15px;"></div>
                 <div id="menu"></div>
             </div>
             <div>
@@ -73,67 +72,28 @@
         <span class="k-button reload_menu" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
     </script>
 
-    <div id="change_categories_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+        <div id="change_menu_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
          aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Редактирование категории</h4>
-                    </div>
-                    <div class="modal-body">
-                        <div id="change_categories" class="k-edit-form-container" style="width: inherit;">
-                            <div class="k-edit-label">
-                                <label>Название<span class="required">*</span>:</label>
-                            </div>
-                            <div class="k-edit-field">
-                                <input type="text" class="k-textbox" name="name" required placeholder="Название"
-                                       style="width: 100%"
-                                       data-bind="value: o.name"/>
-                            </div>
-                            <div class="k-edit-label">
-                                <label>Позиция:</label>
-                            </div>
-                            <div class="k-edit-field">
-                                <input data-role="numerictextbox"
-                                       data-format="n0"
-                                       data-min="0"
-                                       data-bind="value: o.weight"
-                                       style="width: 100%">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="clear"></div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
-                        <button id="categories_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="change_menu_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
-         aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                        <h4 class="modal-title" id="myModalLabel">Редактирование блюда</h4>
+                        <h4 class="modal-title" >Редактирование блюда</h4>
                     </div>
                     <div class="modal-body">
                         <div id="change_menu" class="k-edit-form-container" style="width: inherit;">
                             <div class="k-edit-label">
                                 <label>Категория<span class="required">*</span>:</label>
                             </div>
-                            <div class="k-edit-field">
-                                <select data-role="dropdownlist" name="category" style="width: 100%"
+                            <div class="k-edit-field" style="display: table;">
+                                <select data-role="dropdownlist" name="category" style="width: 100%; display: table-cell;"
                                         data-bind="source: categories, value: o.category"
                                         data-text-field="name" data-value-field="id"
                                         data-option-label="Выберите категорию..." required>
                                 </select>
+                                <span class="k-button show_categories" style="width: 30px; display: table-cell;">
+                                    <i class="fa fa-pencil"></i></span>
                                 <span class="k-invalid-msg" data-for="category"></span>
                             </div>
                             <div class="k-edit-label">
@@ -175,6 +135,68 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
                         <button id="menu_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="categories_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" >Список категорий</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="categories" ></div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="change_categories_window" class="modal fade" tabindex="-1" role="dialog"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title" >Редактирование категории</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div id="change_categories" class="k-edit-form-container" style="width: inherit;">
+                            <div class="k-edit-label">
+                                <label>Название<span class="required">*</span>:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="name" required placeholder="Название"
+                                       style="width: 100%"
+                                       data-bind="value: o.name"/>
+                            </div>
+                            <div class="k-edit-label">
+                                <label>Позиция:</label>
+                            </div>
+                            <div class="k-edit-field">
+                                <input data-role="numerictextbox"
+                                       data-format="n0"
+                                       data-min="0"
+                                       data-bind="value: o.weight"
+                                       style="width: 100%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="clear"></div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default btn-sm" data-dismiss="modal">Закрыть</button>
+                        <button id="categories_save" type="button" class="btn btn-primary btn-sm">Сохранить</button>
                     </div>
                 </div>
             </div>

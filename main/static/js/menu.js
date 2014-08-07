@@ -103,6 +103,8 @@ var cartPreviewModel = kendo.observable({
     }
 });
 
+var order_validator = $("#")
+
 var orderModel = kendo.observable({
     cart: cart,
 
