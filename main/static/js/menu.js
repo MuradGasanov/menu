@@ -99,19 +99,54 @@ var cartPreviewModel = kendo.observable({
         //this.get("cart").clear();
         //sushi.navigate("/");
         layout.showIn("#content", order);
-        console.log(e);
     }
 });
 
-var order_validator = $("#")
-
 var orderModel = kendo.observable({
+    validator: null,
     cart: cart,
+    o: {
+        phoneNumber: "",
+        city: "Махачкала",
+        street: "",
+        house: "",
+        flat: "",
+        comments: "",
+        order_id_list: []
+    },
 
     order: function (e) {
-        this.get("cart").clear();
-        sushi.navigate("/");
+        if (!this.validator) {
+            this.validator =  $("#details-order").kendoValidator({
+                rules: {
+                    required: function (input) {
+                        if (input.is("[required]")) {
+                            input.val($.trim(input.val())); //удалить обертывающие пробелы
+                            return input.val() !== "";
+                        } else return true;
+                    }
+                },
+                messages: { required: "Поле не может быть пустым" }
+            }).data("kendoValidator");
+        }
+        if (!this.validator.validate()) { console.log("not validate");return false; }
+        var contents = this.cart.contents;
+
+        var order_id_list = [];
+        for(var i=0; i<contents.length; i++) {
+            order_id_list.push({
+                id: contents[i].item.id,
+                quantity: contents[i].quantity
+            });
+        }
+        this.o.order_id_list = order_id_list;
+        $.post("new_order/", JSON.stringify({
+            data: this.o
+        }), function(data) {
+            
+        }, "json")
     }
+
 });
 
 var indexModel = kendo.observable({
@@ -191,12 +226,12 @@ var detailModel = kendo.observable({
 });
 
 // Views and layouts
-var layout = new kendo.Layout("layout-template", { model: layoutModel });
-var cartPreview = new kendo.Layout("cart-preview-template", { model: cartPreviewModel });
-var index = new kendo.View("index-template", { model: indexModel });
-var checkout = new kendo.View("checkout-template", {model: cartPreviewModel });
-var order = new kendo.View("order-template", {model: orderModel });
-var detail = new kendo.View("detail-template", { model: detailModel });
+var layout = new kendo.Layout("layout-template", { model: layoutModel }); //Основная форма
+var cartPreview = new kendo.Layout("cart-preview-template", { model: cartPreviewModel }); //Список корзина
+var index = new kendo.View("index-template", { model: indexModel }); //Основной список
+var checkout = new kendo.View("checkout-template", {model: cartPreviewModel }); //Корзина
+var order = new kendo.View("order-template", {model: orderModel }); //Форма заказа
+var detail = new kendo.View("detail-template", { model: detailModel }); //Элемент меню
 
 var sushi = new kendo.Router({
     init: function () {
@@ -242,7 +277,6 @@ $(function () {
         $.each(this.data(), function(i, e) {
             if (e.type == "category") {
                 $('<li class="title"><a href="#" data-id="menu'+ e.id+'">'+ e.name+'</a></li>').appendTo("#titles");
-                console.log(e.name, e.id);
             }
         })
     });

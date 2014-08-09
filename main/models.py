@@ -50,3 +50,27 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
                 os.remove(old_file.path)
     except Menu.DoesNotExist:
         return False
+
+
+class Customers(models.Model):
+    phone = models.CharField(max_length=30)
+
+
+class OrderStatus(models.Model):
+    name = models.CharField(max_length=20)
+
+
+class Orders(models.Model):
+    customer = models.ForeignKey(Customers)
+    city = models.CharField(max_length=50)
+    street = models.CharField(max_length=50)
+    house = models.CharField(max_length=20)
+    flat = models.CharField(max_length=20)
+    comment = models.CharField(max_length=500)
+    status = models.ForeignKey(OrderStatus)
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Orders)
+    menu = models.ForeignKey(Menu)
+    quantity = models.IntegerField()

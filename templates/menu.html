@@ -92,23 +92,45 @@
                             <label>Номер телефона<span class="required">*</span>:</label>
                         </div>
                         <div class="k-edit-field">
-                             <input data-role="maskedtextbox"
+                             <input name="phonenumber" data-role="maskedtextbox"
                                            data-mask="+7 (999) 000-00-00"
-                                           data-bind="value: phoneNumber"
-                                           style="width: 100%">
+                                           data-bind="value: o.phoneNumber"
+                                           style="width: 100%"
+                                           placeholder="+7 (928) 555-44-33" required>
                         </div>
                         <div class="k-edit-label">
-                            <label>Адрес<span class="required">*</span>:</label>
+                            <label>Город<span class="required">*</span>:</label>
                         </div>
                         <div class="k-edit-field">
-                                <textarea placeholder="Адрес доставки" class="k-textbox" data-bind="value: address"
-                                          style="width: 100%; height: 50px;"> </textarea>
+                                <input type="text" class="k-textbox" name="city" required placeholder="Город" style="width: 100%"
+                                       data-bind="value: o.city"/>
+                        </div>
+                        <div class="k-edit-label">
+                            <label>Улица<span class="required">*</span>:</label>
+                        </div>
+                        <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="street" required placeholder="Улица" style="width: 100%"
+                                       data-bind="value: o.street"/>
+                        </div>
+                        <div class="k-edit-label">
+                            <label>Дом<span class="required">*</span>:</label>
+                        </div>
+                        <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="house" required placeholder="Дом" style="width: 100%"
+                                       data-bind="value: o.house"/>
+                        </div>
+                        <div class="k-edit-label">
+                            <label>Квартира/офис<span class="required">*</span>:</label>
+                        </div>
+                        <div class="k-edit-field">
+                                <input type="text" class="k-textbox" name="flat" required placeholder="Номер квартиры/офиса" style="width: 100%"
+                                       data-bind="value: o.flat"/>
                         </div>
                         <div class="k-edit-label">
                             <label>Комментарий:</label>
                         </div>
                         <div class="k-edit-field">
-                                <textarea placeholder="Комментарий к заказу" class="k-textbox" data-bind="value: comments"
+                                <textarea placeholder="Комментарий к заказу" class="k-textbox" data-bind="value: o.comments"
                                           style="width: 100%; height: 100px;"> </textarea>
                         </div>
                     </div>

@@ -86,15 +86,16 @@
                             <div class="k-edit-label">
                                 <label>Категория<span class="required">*</span>:</label>
                             </div>
-                            <div class="k-edit-field" style="display: table;">
-                                <select data-role="dropdownlist" name="category" style="width: 100%; display: table-cell;"
-                                        data-bind="source: categories, value: o.category"
-                                        data-text-field="name" data-value-field="id"
-                                        data-option-label="Выберите категорию..." required>
-                                </select>
-                                <span class="k-button show_categories" style="width: 30px; display: table-cell;">
-                                    <i class="fa fa-pencil"></i></span>
-                                <span class="k-invalid-msg" data-for="category"></span>
+                            <div class="k-edit-field" >
+                                <div style="display: table; width: 100%;">
+                                    <select data-role="dropdownlist" name="category" style="width: 100%; display: table-cell;"
+                                            data-bind="source: categories, value: o.category"
+                                            data-text-field="name" data-value-field="id"
+                                            data-option-label="Выберите категорию..." required>
+                                    </select>
+                                    <span class="k-button show_categories" style="width: 30px; display: table-cell;">
+                                        <i class="fa fa-pencil"></i></span>
+                                </div><span class="k-invalid-msg" data-for="category"></span>
                             </div>
                             <div class="k-edit-label">
                                 <label>Название<span class="required">*</span>:</label>
@@ -120,7 +121,9 @@
                                        data-format="c"
                                        data-min="0"
                                        data-bind="value: o.price"
-                                       style="width: 100%">
+                                       name="price"
+                                       style="width: 100%" required>
+                                <span class="k-invalid-msg" data-for="price"></span>
                             </div>
                             <div class="k-edit-label">
                                 <label>Превью:</label>

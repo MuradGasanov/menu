@@ -316,21 +316,27 @@ $(document).ready(function () {
             required: function (input) {
                 if (input.is("[required]")) {
                     input.val($.trim(input.val())); //удалить обертывающие пробелы
-                    return input.val() !== "";
+                    return !!input.val();
+                } else return true;
+            },
+            price: function(input) {
+                if (input.is("[name=price]")) {
+                    return input.val() !== "0";
                 } else return true;
             }
         },
         messages: {
-            required: "Поле не может быть пустым"
+            required: "Поле не может быть пустым",
+            price: "Цена не может быть нулем"
         }
     }).data("kendoValidator");
 
     $(".add_menu").click(function (e) {
         var data = categories.dataSource.data();
-        if (data.length === 0) {
-            noti({title: "Нет категорий", message: "Необходимо сначала создать хотя бы одну категорию"},  "error", 5000);
-            return false;
-        }
+        //if (data.length === 0) {
+        //    noti({title: "Нет категорий", message: "Необходимо сначала создать хотя бы одну категорию"},  "error", 5000);
+        //    return false;
+        //}
         $(".k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg").hide();
         menu_model.set("is_edit", false);
         preview.attr("src", "/media/default.png"); /// FIXME: hard string
