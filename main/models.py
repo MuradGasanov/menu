@@ -56,10 +56,6 @@ class Customers(models.Model):
     phone = models.CharField(max_length=30)
 
 
-class OrderStatus(models.Model):
-    name = models.CharField(max_length=20)
-
-
 class Orders(models.Model):
     customer = models.ForeignKey(Customers)
     city = models.CharField(max_length=50)
@@ -67,7 +63,14 @@ class Orders(models.Model):
     house = models.CharField(max_length=20)
     flat = models.CharField(max_length=20)
     comment = models.CharField(max_length=500)
-    status = models.ForeignKey(OrderStatus)
+
+    NOT_COMPLETED = 0
+    COMPLETED = 1
+    STATUS_CHOICES = (
+        (NOT_COMPLETED, 'Не завершен'),
+        (COMPLETED, 'Завершен')
+    )
+    status = models.IntegerField(choices=STATUS_CHOICES, default=NOT_COMPLETED)
 
 
 class OrderItem(models.Model):

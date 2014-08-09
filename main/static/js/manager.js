@@ -315,7 +315,9 @@ $(document).ready(function () {
         rules: {
             required: function (input) {
                 if (input.is("[required]")) {
-                    input.val($.trim(input.val())); //удалить обертывающие пробелы
+                    if (!input.is("[name=category]")) { //удалить обертывающие пробелы
+                        input.val($.trim(input.val())); //для всех кроме выпадаюшего списка
+                    }
                     return !!input.val();
                 } else return true;
             },

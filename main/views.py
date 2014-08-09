@@ -235,3 +235,32 @@ def read_menu(request):
         return HttpResponse(json.dumps(menu_list), content_type="application/json")
     else:
         return HttpResponse("[]", content_type="application/json")
+
+########################################################################################################################
+
+
+def add_order(request):
+    item = json.loads(request.POST.get("item"))
+
+    phone_number = item.get("phoneNumber")
+
+    customer, created = models.Customers.objects.get_or_create(phone=phone_number)
+
+    order = models.Orders.objects.create(
+        customer=customer,
+        city=item.get("city"),
+        street=item.get("street"),
+        house=item.get("house"),
+        flat=item.get("flat"),
+        comment=item.get("comments")
+    )
+
+    models.OrderItem.objects.bulk_create(
+        [models.OrderItem(
+            order=order,
+            menu_id=int(order_item.get("menu_id")),
+            quantity=int(order_item.get("quantity"))
+        ) for order_item in item.get("order_id_list")]
+    )
+
+    return HttpResponse("ok", content_type="application/json")

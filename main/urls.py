@@ -26,5 +26,6 @@ urlpatterns = patterns('main.views',
                        # url(r'^'+MANAGER_BASE_URL+'menu/image/delete/$', Menu.image_delete),
 
                        url(r'^menu/$', read_menu),
+                       url(r'^add_order/$', add_order),
 
                        )

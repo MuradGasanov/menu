@@ -135,14 +135,14 @@ var orderModel = kendo.observable({
         var order_id_list = [];
         for(var i=0; i<contents.length; i++) {
             order_id_list.push({
-                id: contents[i].item.id,
+                menu_id: contents[i].item.id,
                 quantity: contents[i].quantity
             });
         }
         this.o.order_id_list = order_id_list;
-        $.post("new_order/", JSON.stringify({
-            data: this.o
-        }), function(data) {
+        $.post("add_order/", {
+            item: JSON.stringify(this.o)
+        }, function(data) {
             
         }, "json")
     }
