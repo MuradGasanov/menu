@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import os
-from menu import settings
-
 __author__ = 'Murad Gasanov'
 
 from django.shortcuts import render_to_response, HttpResponse, HttpResponseRedirect
@@ -9,7 +6,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseForbidden
 import main.models as models
-from datetime import *
+import datetime
 import json
 
 
@@ -42,7 +39,7 @@ def log_in(request):
 
     if user:
         login(request, user)
-        request.session.set_expiry(timedelta(days=1).seconds)
+        request.session.set_expiry(datetime.timedelta(days=1).seconds)
         if user.is_active:
             return HttpResponse(json.dumps({"error": []}), content_type="application/json")
         else:
@@ -206,61 +203,115 @@ class Menu():
 
         return HttpResponse(item.get("id"), content_type="application/json")
 
-########################################################################################################################
+    @staticmethod
+    def user_read(request):
+        categories = models.Categories.objects.all()
 
-
-def read_menu(request):
-    categories = models.Categories.objects.all()
-
-    menu_list = []
-    for c in categories:
-        menu = models.Menu.objects.filter(category=c.id)
-        if menu:
-            menu_list.append({
-                "id": -c.id,
-                "type": "category",
-                "name": c.name
-            })
-            for m in menu:
+        menu_list = []
+        for c in categories:
+            menu = models.Menu.objects.filter(category=c.id)
+            if menu:
                 menu_list.append({
-                    "id": m.id,
-                    "type": "menu_item",
-                    "name": m.name,
-                    "description": m.description,
-                    "price": m.price,
-                    "image": m.image.url
+                    "id": -c.id,
+                    "type": "category",
+                    "name": c.name
                 })
+                for m in menu:
+                    menu_list.append({
+                        "id": m.id,
+                        "type": "menu_item",
+                        "name": m.name,
+                        "description": m.description,
+                        "price": m.price,
+                        "image": m.image.url
+                    })
 
-    if menu_list:
-        return HttpResponse(json.dumps(menu_list), content_type="application/json")
-    else:
-        return HttpResponse("[]", content_type="application/json")
+        if menu_list:
+            return HttpResponse(json.dumps(menu_list), content_type="application/json")
+        else:
+            return HttpResponse("[]", content_type="application/json")
 
 ########################################################################################################################
 
 
-def add_order(request):
-    item = json.loads(request.POST.get("item"))
+class Orders():
+    def __init__(self):
+        pass
 
-    phone_number = item.get("phoneNumber")
+    @staticmethod
+    def add_order(request):
+        item = json.loads(request.POST.get("item"))
 
-    customer, created = models.Customers.objects.get_or_create(phone=phone_number)
+        phone_number = item.get("phoneNumber")
 
-    order = models.Orders.objects.create(
-        customer=customer,
-        city=item.get("city"),
-        street=item.get("street"),
-        house=item.get("house"),
-        flat=item.get("flat"),
-        comment=item.get("comments")
-    )
+        customer, created = models.Customers.objects.get_or_create(phone=phone_number)
 
-    models.OrderItem.objects.bulk_create(
-        [models.OrderItem(
-            order=order,
-            menu_id=int(order_item.get("menu_id")),
-            quantity=int(order_item.get("quantity"))
-        ) for order_item in item.get("order_id_list")]
-    )
+        order = models.Orders.objects.create(
+            customer=customer,
+            city=item.get("city"),
+            street=item.get("street"),
+            house=item.get("house"),
+            flat=item.get("flat"),
+            comment=item.get("comments"),
+            create_at=datetime.datetime.now()
+        )
 
-    return HttpResponse("ok", content_type="application/json")
+        models.OrderItem.objects.bulk_create(
+            [models.OrderItem(
+                order=order,
+                menu_id=int(order_item.get("menu_id")),
+                quantity=int(order_item.get("quantity"))
+            ) for order_item in item.get("order_id_list")]
+        )
+
+        return HttpResponse("ok", content_type="application/json")
+
+    @staticmethod
+    def read(request):
+        orders = models.Orders.objects.all()
+
+        orders_list = []
+        for order in orders:
+            orders_list.append({
+                "id": order.id,
+                "customer": order.customer.phone,
+                "address": order.address,
+                "create_at": order.create_at,
+                "status": order.status
+            })
+
+        if orders_list:
+            dt_handler = lambda obj: (
+                obj.isoformat() if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date)
+                else None
+            )
+            return HttpResponse(json.dumps(orders_list, default=dt_handler), content_type="application/json")
+        else:
+            return HttpResponse("[]", content_type="application/json")
+
+    @staticmethod
+    def destroy(request):
+        item = json.loads(request.POST.get("item"))
+        order = models.Orders.objects.get(id=int(item.get("id")))
+        order.delete()
+        return HttpResponse(item.get("id"), content_type="application/json")
+
+    @staticmethod
+    def detail(request):
+        order_id = int(request.POST.get("order_id"))
+
+        order_items = models.OrderItem.objects.filter(order_id=order_id)
+
+        order_detail_list = []
+        for order_item in order_items:
+            order_detail_list.append({
+                "id": order_item.id,
+                "name": order_item.menu.name,
+                "quantity": order_item.quantity,
+                "price": order_item.menu.price
+            })
+
+        if order_detail_list:
+            return HttpResponse(json.dumps(order_detail_list), content_type="application/json")
+        else:
+            return HttpResponse("[]", content_type="application/json")

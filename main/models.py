@@ -63,6 +63,11 @@ class Orders(models.Model):
     house = models.CharField(max_length=20)
     flat = models.CharField(max_length=20)
     comment = models.CharField(max_length=500)
+    create_at = models.DateTimeField()
+
+    @property
+    def address(self):
+        return "".join([self.city, " ", self.street, " ", self.house, " ", self.flat])
 
     NOT_COMPLETED = 0
     COMPLETED = 1
@@ -71,6 +76,9 @@ class Orders(models.Model):
         (COMPLETED, 'Завершен')
     )
     status = models.IntegerField(choices=STATUS_CHOICES, default=NOT_COMPLETED)
+
+    class Meta:
+        ordering = ["-create_at"]
 
 
 class OrderItem(models.Model):

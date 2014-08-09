@@ -9,6 +9,7 @@
 {% block script %}
     <script src="{% static "kendo/js/cultures/kendo.culture.ru-RU.min.js" %}"></script>
     <script src="{% static "kendo/js/kendo.web.min.js" %}"></script>
+    <script>  kendo.culture("ru-RU"); </script>
     <script src="{% static "js/noty.js" %}"></script>
     <script src="{% static "js/manager.js" %}"></script>
 {% endblock %}
@@ -36,10 +37,10 @@
 
         <div id="tabs">
             <ul>
-                <li class="k-state-active">
+                <li>
                     <i class="fa fa-book"></i> Меню
                 </li>
-                <li>
+                <li class="k-state-active">
                     <i class="fa fa-users"></i> Заказы
                 </li>
                 <li>
@@ -50,7 +51,7 @@
                 <div id="menu"></div>
             </div>
             <div>
-                Заказы
+                <div id="orders"></div>
             </div>
             <div>
                 СМС рассылки
@@ -62,14 +63,23 @@
 
     <script type="text/x-kendo-template" id="categories_header_template">
         <span class="k-button add_categories"><i class="fa fa-plus-circle"></i> Добавить категорию</span>
-        <span class="k-button expand_categories"><i class="fa fa-caret-down"></i> Раскрыть</span>
-        <span class="k-button collapse_categories"><i class="fa fa-caret-right"></i> Свернуть</span>
         <span class="k-button reload_categories" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
     </script>
 
     <script type="text/x-kendo-template" id="menu_header_template">
         <span class="k-button add_menu"><i class="fa fa-plus-circle"></i> Добавить</span>
         <span class="k-button reload_menu" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
+    </script>
+
+    <script type="text/x-kendo-template" id="orders_header_template">
+        <span class="k-button expand_orders"><i class="fa fa-caret-down"></i> Раскрыть</span>
+        <span class="k-button collapse_orders"><i class="fa fa-caret-right"></i> Свернуть</span>
+        <span class="k-button reload_order" title="Перезагрузить таблицу"><i class="fa fa-repeat"></i> </span>
+    </script>
+
+    <script type="text/x-kendo-template" id="orders_detail_template">
+        <span id="comments"></span>
+        <div id="order_detail"></div>
     </script>
 
         <div id="change_menu_window" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog"

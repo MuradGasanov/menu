@@ -399,4 +399,105 @@ $(document).ready(function () {
         return false;
     });
 
+    var orders = $("#orders").kendoGrid({
+        dataSource: {
+            type: "json",
+            transport: {
+                read: {
+                    url: MANAGER_BASE_URL + "orders/read/",
+                    type: "POST",
+                    dataType: "json"
+                },
+                destroy: {
+                    url: MANAGER_BASE_URL + "orders/destroy/",
+                    dataType: "json",
+                    type: "POST"
+                },
+                parameterMap: function (options, operation) {
+                    if (operation !== "read" && options) {
+                        return {item: kendo.stringify(options)};
+                    }
+                }
+            },
+            schema: {
+                model: {
+                    id: "id",
+                    fields: { ctreate_at: {type: "date"}, customer: {type: "string"}, address: {type: "string"}, status: {type: "number"}}
+                }
+            }
+        },
+        sortable: true,
+        editable: {
+            mode: "inline",
+            confirmation: "Вы уверены, что хотите удалить запись?",
+            confirmDelete: "Да",
+            cancelDelete: "Нет"
+        },
+        toolbar: [
+            { template: kendo.template($("#orders_header_template").html()) }
+        ],
+        detailTemplate: kendo.template($("#orders_detail_template").html()),
+        detailInit: order_detail_init,
+        columns: [
+            { field: "create_at", title: "Дата", template: "#=kendo.toString(new Date(Date.parse(create_at)), 'd MMM  HH:mm')#", width: "200px" },
+            { field: "customer", title: "Телефон", width: "150px" },
+            { field: "address", title: "Адрес"},
+            { command: [
+                {
+                    name: "destroy",
+                    template: "<a class='k-button k-grid-delete' title='Удалить'><span class='k-icon k-delete'></span></a>"
+                }
+            ], width: 46, attributes: { style: "text-align: center;"}  }
+        ]
+    }).data("kendoGrid");
+
 });
+
+function order_detail_init(e) {
+    var detailRow = e.detailRow;
+    var order_id = e.data.id;
+    var orderDetailDS = new kendo.data.DataSource({
+        type: "json",
+        transport: {
+            read: {
+                url: "/manager/orders/detail/",
+                type: "POST",
+                dataType: "json"
+            },
+            parameterMap: function (options, operation) {
+                if (operation == "read") {
+                    return {order_id : order_id };
+                }
+                if (options) {
+                    return {item: kendo.stringify(options)};
+                }
+            }
+        },
+        schema: {
+            model: {
+                id: "id"
+            }
+        }
+    });
+    var order_detail = detailRow.find("#order_detail").kendoGrid({
+        dataSource: orderDetailDS,
+        height: 300,
+        sortable: true,
+        editable: {
+            mode: "inline",
+            confirmation: "Вы уверены, что хотите удалить запись?",
+            confirmDelete: "Да",
+            cancelDelete: "Нет"
+        },
+        columns: [
+            { field: "name", title: "Название" },
+            { field: "quantity", title: "Количество", width: "100px" },
+            { field: "price", title: "Цена ед.", width: "100px", footerTemplate:"#= footerTemplate() #" }
+        ]
+    }).data("kendoGrid");
+
+}
+
+function footerTemplate(data) {
+    console.log(data);
+}

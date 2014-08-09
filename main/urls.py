@@ -25,7 +25,11 @@ urlpatterns = patterns('main.views',
                        url(r'^'+MANAGER_BASE_URL+'menu/image/set/$', Menu.image_set),
                        # url(r'^'+MANAGER_BASE_URL+'menu/image/delete/$', Menu.image_delete),
 
-                       url(r'^menu/$', read_menu),
-                       url(r'^add_order/$', add_order),
+                       url(r'^'+MANAGER_BASE_URL+'orders/read/$', Orders.read),
+                       url(r'^'+MANAGER_BASE_URL+'orders/destroy/$', Orders.destroy),
+                       url(r'^'+MANAGER_BASE_URL+'orders/detail/$', Orders.detail),
+
+                       url(r'^menu/$', Menu.user_read),
+                       url(r'^add_order/$', Orders.add_order),
 
                        )
