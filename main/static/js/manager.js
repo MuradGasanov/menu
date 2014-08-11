@@ -1,6 +1,11 @@
 var MANAGER_BASE_URL = "/manager/";
 $(document).ready(function () {
 
+    var ORDER_STATUS = {
+        NOT_COMPLETED: 0,
+        COMPLETED: 1
+    };
+
     $("#tabs").kendoTabStrip({
         animation: {
             open: {
@@ -442,6 +447,10 @@ $(document).ready(function () {
             { field: "create_at", title: "Дата", template: "#=kendo.toString(new Date(Date.parse(create_at)), 'd MMM  HH:mm')#", width: "200px" },
             { field: "customer", title: "Телефон", width: "150px" },
             { field: "address", title: "Адрес"},
+            { field: "status", title: "Статус",
+                template: "<span class='change_order_status k-button #=(status)?'completed_status':'not_completed_status'#' data-status='#=status#' data-id='#=id#'>#=(status)?'Выполнен':'Не выполнел'#</span>",
+                width: "150px", attributes: { style: "text-align: center;"}
+            },
             { command: [
                 {
                     name: "destroy",
@@ -451,6 +460,26 @@ $(document).ready(function () {
         ]
     }).data("kendoGrid");
 
+    $("#orders").on("click", ".change_order_status", function (e) {
+        if (!confirm("Изменить статус заказа?")) { return false }
+        var that = $(this);
+        var id = that.data("id"),
+            status = that.data("status");
+        var new_status = (status === ORDER_STATUS.COMPLETED)
+            ?ORDER_STATUS.NOT_COMPLETED : ORDER_STATUS.COMPLETED;
+        var data = {
+            id: id,
+            new_status: new_status
+        };
+        $.post(MANAGER_BASE_URL + "orders/change_status/", {item: JSON.stringify(data)},
+        function(response) {
+            console.log(response);
+            if (response === "ok") {
+                that.toggleClass("completed_status not_completed_status");
+                that.text((status === ORDER_STATUS.COMPLETED)?"Не выполнел" : "Выполнен")
+            }
+        }, "json");
+    });
 });
 
 function order_detail_init(e) {

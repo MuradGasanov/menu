@@ -37,3 +37,15 @@ body {
     margin: 5px 0;
     padding: 5px;
 }
+
+.not_completed_status {
+    color: #FFF;
+    background-color: #D9534F;
+    border-color: #D43F3A;
+}
+
+.completed_status {
+    color: #FFF;
+    background-color: #31B0D5;
+    border-color: #269ABC;
+}

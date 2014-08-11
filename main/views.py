@@ -324,3 +324,7 @@ class Orders():
                 }}), content_type="application/json")
         else:
             return HttpResponse("[]", content_type="application/json")
+
+    @staticmethod
+    def change_status(request):
+        return HttpResponse("{'new_status': 1}", content_type="application/json")
