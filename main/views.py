@@ -277,6 +277,7 @@ class Orders():
                 "customer": order.customer.phone,
                 "address": order.address,
                 "create_at": order.create_at,
+                "comment": order.comment,
                 "status": order.status
             })
 
@@ -303,6 +304,7 @@ class Orders():
         order_items = models.OrderItem.objects.filter(order_id=order_id)
 
         order_detail_list = []
+        total_price = 0
         for order_item in order_items:
             order_detail_list.append({
                 "id": order_item.id,
@@ -310,8 +312,15 @@ class Orders():
                 "quantity": order_item.quantity,
                 "price": order_item.menu.price
             })
+            total_price += order_item.quantity * order_item.menu.price
 
         if order_detail_list:
-            return HttpResponse(json.dumps(order_detail_list), content_type="application/json")
+            return HttpResponse(json.dumps({
+                "data": order_detail_list,
+                "aggregates": {
+                    "price": {
+                        "total_price": "%.2f" % total_price
+                    }
+                }}), content_type="application/json")
         else:
             return HttpResponse("[]", content_type="application/json")

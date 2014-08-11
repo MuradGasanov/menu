@@ -456,6 +456,9 @@ $(document).ready(function () {
 function order_detail_init(e) {
     var detailRow = e.detailRow;
     var order_id = e.data.id;
+
+    detailRow.find("#comment").text(e.data.comment);
+
     var orderDetailDS = new kendo.data.DataSource({
         type: "json",
         transport: {
@@ -473,7 +476,13 @@ function order_detail_init(e) {
                 }
             }
         },
+        aggregate: [
+            { field: "price", aggregate: "total_price" }
+        ],
+        serverAggregates: true,
         schema: {
+            data: "data",
+            aggregates: "aggregates",
             model: {
                 id: "id"
             }
@@ -492,12 +501,11 @@ function order_detail_init(e) {
         columns: [
             { field: "name", title: "Название" },
             { field: "quantity", title: "Количество", width: "100px" },
-            { field: "price", title: "Цена ед.", width: "100px", footerTemplate:"#= footerTemplate() #" }
+            { field: "price", title: "Цена ед.", width: "100px", footerTemplate:" #= total_price #" }
         ]
     }).data("kendoGrid");
 
 }
 
 function footerTemplate(data) {
-    console.log(data);
 }
