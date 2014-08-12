@@ -241,20 +241,37 @@ var sushi = new kendo.Router({
 
 // Routing
 sushi.route("/", function () {
+    viewingDetail = false;
     layout.showIn("#content", index);
     layout.showIn("#pre-content", cartPreview);
 });
 
 sushi.route("/checkout", function () {
+    viewingDetail = false;
     layout.showIn("#content", checkout);
     cartPreview.hide();
 });
 
+var viewingDetail = false;
+
 sushi.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
+    var transition = "",
+        current = detailModel.get("current");
 
-    detailModel.setCurrent(itemID);
-    layout.showIn("#content", detail);
+    if (viewingDetail && current) {
+        transition = current.id < itemID ? "tileleft" : "tileright";
+    }
+
+    if (detailModel.get("current")) {
+        layout.showIn("#content", detail, transition);
+        detailModel.setCurrent(itemID);
+    } else {
+        detailModel.setCurrent(itemID);
+        layout.showIn("#content", detail, transition);
+    }
+
+    viewingDetail = true;
 });
 
 $(function () {
