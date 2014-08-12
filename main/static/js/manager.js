@@ -6,6 +6,17 @@ $(document).ready(function () {
         COMPLETED: 1
     };
 
+    var MESSAGES = {
+      ERROR: {
+          title: "Ошибка ответа от сервера",
+          message: ""
+      },
+      WAIT: {
+          title: "Выполняется запрос",
+          message: "Пожалуйста подождите"
+      }
+    };
+
     $("#tabs").kendoTabStrip({
         animation: {
             open: {
@@ -471,14 +482,24 @@ $(document).ready(function () {
             id: id,
             new_status: new_status
         };
-        $.post(MANAGER_BASE_URL + "orders/change_status/", {item: JSON.stringify(data)},
-        function(response) {
-            console.log(response);
-            if (response === "ok") {
+
+        that.html("Выполняется");
+
+        $.ajax({
+            type: "POST",
+            url: MANAGER_BASE_URL + "orders/change_status/",
+            dataType: "json",
+            data: {item: JSON.stringify(data)}
+        }).success(function(response) {
+            if (response.status === "ok") {
+                noti("hide");
                 that.toggleClass("completed_status not_completed_status");
+                that.data("status", response.new_status);
                 that.text((status === ORDER_STATUS.COMPLETED)?"Не выполнел" : "Выполнен")
             }
-        }, "json");
+        }).fail(function(response) {
+            console.log(response);
+        });
     });
 });
 

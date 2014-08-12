@@ -327,4 +327,13 @@ class Orders():
 
     @staticmethod
     def change_status(request):
-        return HttpResponse("{'new_status': 1}", content_type="application/json")
+        item = json.loads(request.POST.get("item"))
+
+        order = models.Orders.objects.get(id=int(item.get("id")))
+        order.status = item.get("new_status")
+        order.save()
+
+        return HttpResponse(json.dumps({
+            "status": "ok",
+            "new_status": order.status
+        }), content_type="application/json")

@@ -45,7 +45,7 @@ if (!String.prototype.format) {
                 k_noti.hide();
                 return false;
             }
-            time =  typeof time === 'undefined' ? 30000 : time;
+            time =  typeof time === 'undefined' ? 300000 : time;
             k_noti.hide();
             k_noti.show(option, type);
             clearTimeout(last_time_out_id);
