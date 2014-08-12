@@ -10,7 +10,7 @@ mkdir ../menu_static/media
 echo $0: Installing dependencies
 source ../menu_env/bin/activate
 export PIP_REQUIRE_VIRTUALENV=true
-../menu_env/bin/pip install --requirement=./requirements.conf --log=./menu_logs/build_pip_packages.log
+../menu_env/bin/pip install --requirement=./requirements.conf --log=../menu_logs/build_pip_packages.log
 
 echo $0: Making virtual environment relocatable
 virtualenv --relocatable ../menu_env
