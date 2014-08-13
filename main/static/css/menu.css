@@ -1018,7 +1018,6 @@ table tbody td:first-child + td + td p{
     position: relative;
     border-top: 1px solid #ab7829;
     font-size: 12px;
-    padding-bottom: 60px;
 }
 
 #copyright{

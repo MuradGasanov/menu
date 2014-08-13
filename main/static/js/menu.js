@@ -96,8 +96,6 @@ var cartPreviewModel = kendo.observable({
     },
 
     proceed: function (e) {
-        //this.get("cart").clear();
-        //sushi.navigate("/");
         layout.showIn("#content", order);
     }
 });
@@ -202,7 +200,7 @@ var detailModel = kendo.observable({
 
         var id = items.at(index).id;
 
-        return "#/menu/" + id;
+        return "#/menu/-" + id;
     },
 
     nextHref: function () {
@@ -220,9 +218,6 @@ var detailModel = kendo.observable({
         return "#/menu/" + id;
     }
 
-//    kCal: function() {
-//        return kendo.toString(this.get("current").stats.energy /  4.184, "0.0000");
-//    }
 });
 
 // Views and layouts
@@ -233,50 +228,53 @@ var checkout = new kendo.View("checkout-template", {model: cartPreviewModel }); 
 var order = new kendo.View("order-template", {model: orderModel }); //Форма заказа
 var detail = new kendo.View("detail-template", { model: detailModel }); //Элемент меню
 
-var sushi = new kendo.Router({
+var menu = new kendo.Router({
     init: function () {
         layout.render("#application");
     }
 });
 
+var viewingDetail = false;
+
 // Routing
-sushi.route("/", function () {
+menu.route("/", function () {
     viewingDetail = false;
     layout.showIn("#content", index);
     layout.showIn("#pre-content", cartPreview);
 });
 
-sushi.route("/checkout", function () {
+menu.route("/checkout", function () {
     viewingDetail = false;
     layout.showIn("#content", checkout);
     cartPreview.hide();
 });
 
-var viewingDetail = false;
-
-sushi.route("/menu/:id", function (itemID) {
+menu.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
     var transition = "",
         current = detailModel.get("current");
 
     if (viewingDetail && current) {
-        transition = current.id < itemID ? "tileleft" : "tileright";
+        transition = itemID > 0 ? "tileleft" : "tileright";
     }
 
-    if (detailModel.get("current")) {
-        layout.showIn("#content", detail, transition);
-        detailModel.setCurrent(itemID);
-    } else {
-        detailModel.setCurrent(itemID);
-        layout.showIn("#content", detail, transition);
-    }
+    itemID = Math.abs(itemID);
+
+    items.fetch(function(e) {
+        if (detailModel.get("current")) {
+            layout.showIn("#content", detail, transition);
+            detailModel.setCurrent(itemID);
+        } else {
+            detailModel.setCurrent(itemID);
+            layout.showIn("#content", detail, transition);
+        }
+    });
 
     viewingDetail = true;
 });
 
 $(function () {
-    sushi.start();
-    sushi.navigate("");
+    menu.start();
     $('#titles').affix({
         offset: {
             top: function () {
@@ -289,13 +287,5 @@ $(function () {
         $('body').scrollTo("#"+id);
         return false;
     }).css("top", "5px");
-
-    items.fetch(function(e) {
-        $.each(this.data(), function(i, e) {
-            if (e.type == "category") {
-                $('<li class="title"><a href="#" data-id="menu'+ e.id+'">'+ e.name+'</a></li>').appendTo("#titles");
-            }
-        })
-    });
 
 });
