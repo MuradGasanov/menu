@@ -103,6 +103,8 @@ var cartPreviewModel = kendo.observable({
 var orderModel = kendo.observable({
     validator: null,
     cart: cart,
+    order_text: "Заказать",
+    in_progress: false,
     o: {
         phoneNumber: "",
         city: "Махачкала",
@@ -114,8 +116,9 @@ var orderModel = kendo.observable({
     },
 
     order: function (e) {
-        if (!this.validator) {
-            this.validator =  $("#details-order").kendoValidator({
+        var that = this;
+        if (!that.validator) {
+            that.validator =  $("#details-order").kendoValidator({
                 rules: {
                     required: function (input) {
                         if (input.is("[required]")) {
@@ -127,8 +130,10 @@ var orderModel = kendo.observable({
                 messages: { required: "Поле не может быть пустым" }
             }).data("kendoValidator");
         }
-        if (!this.validator.validate()) { console.log("not validate");return false; }
-        var contents = this.cart.contents;
+        if (!that.validator.validate()) { console.log("not validate");return false; }
+        if (that.in_progress) { return false; }
+        console.log("order click");
+        var contents = that.cart.contents;
 
         var order_id_list = [];
         for(var i=0; i<contents.length; i++) {
@@ -137,11 +142,17 @@ var orderModel = kendo.observable({
                 quantity: contents[i].quantity
             });
         }
-        this.o.order_id_list = order_id_list;
+        that.o.order_id_list = order_id_list;
+        that.set("in_progress", true);
+        that.set("order_text", "Обработка");
         $.post("add_order/", {
-            item: JSON.stringify(this.o)
+            item: JSON.stringify(that.o)
         }, function(data) {
-            
+            console.log(data);
+            that.set("in_progress", false);
+            that.set("order_text", "Заказать");
+            that.get("cart").clear();
+            menu.navigate("/");
         }, "json")
     }
 

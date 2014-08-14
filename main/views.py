@@ -280,7 +280,7 @@ class Orders():
             ) for order_item in item.get("order_id_list")]
         )
 
-        return HttpResponse("ok", content_type="application/json")
+        return HttpResponse(json.dumps("ok"), content_type="application/json")
 
     @staticmethod
     def read(request):
