@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+from __builtin__ import staticmethod
+
 __author__ = 'Murad Gasanov'
 
 from django.shortcuts import render_to_response, HttpResponse, HttpResponseRedirect
@@ -239,6 +241,20 @@ class Orders():
         pass
 
     @staticmethod
+    def response_builder(orders):
+        orders_list = []
+        for order in orders:
+            orders_list.append({
+                "id": order.id,
+                "customer": order.customer.phone,
+                "address": order.address,
+                "create_at": order.create_at.isoformat(),
+                "comment": order.comment,
+                "status": order.status
+            })
+        return orders_list
+
+    @staticmethod
     def add_order(request):
         item = json.loads(request.POST.get("item"))
 
@@ -268,25 +284,12 @@ class Orders():
 
     @staticmethod
     def read(request):
-        orders = models.Orders.objects.all()
+        orders = models.Orders.objects.exclude(status=models.Orders.NEW)
 
-        orders_list = []
-        for order in orders:
-            orders_list.append({
-                "id": order.id,
-                "customer": order.customer.phone,
-                "address": order.address,
-                "create_at": order.create_at,
-                "comment": order.comment,
-                "status": order.status
-            })
+        orders_list = Orders.response_builder(orders)
 
         if orders_list:
-            dt_handler = lambda obj: (
-                obj.isoformat() if isinstance(obj, datetime.datetime) or isinstance(obj, datetime.date)
-                else None
-            )
-            return HttpResponse(json.dumps(orders_list, default=dt_handler), content_type="application/json")
+            return HttpResponse(json.dumps(orders_list), content_type="application/json")
         else:
             return HttpResponse("[]", content_type="application/json")
 
@@ -337,3 +340,18 @@ class Orders():
             "status": "ok",
             "new_status": order.status
         }), content_type="application/json")
+
+    @staticmethod
+    def check_new_order(request):
+
+        order = models.Orders.objects.filter(status=models.Orders.NEW)
+        order_ids = list(order.values_list("id", flat=True))
+        order.update(status=models.Orders.NOT_COMPLETED)
+        order = models.Orders.objects.filter(id__in=order_ids)
+
+        orders_list = Orders.response_builder(order)
+
+        if orders_list:
+            return HttpResponse(json.dumps(orders_list), content_type="application/json")
+        else:
+            return HttpResponse("[]", content_type="application/json")

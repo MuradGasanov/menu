@@ -13,6 +13,11 @@ if (!String.prototype.format) {
 (function($) {
     $(function (e) {
         window.k_noti = $("#k-notification").kendoNotification({
+            position: {
+                pinned: true,
+                top: 30,
+                right: 30
+            },
             autoHideAfter: 0,
             stacking: "down",
             templates: [
@@ -27,22 +32,34 @@ if (!String.prototype.format) {
                 {
                     type: "done",
                     template: $("#doneTemplate").html()
+                },
+                {
+                    type: "alert",
+                    template: $("#alertTemplate").html()
                 }
             ],
             show: function (e) {
-                var margin = "-{0}px 0 0 -{1}px".format(
-                    Math.floor(e.element.height() / 2),
-                    Math.floor(e.element.width() / 2)
-                );
-                e.element.parent().css({left: "50%", top: "50%", margin: margin});
+                var elm = e.element;
+                if (elm.children().attr("class") !== "alert-noti") {
+                    var margin = "-{0}px 0 0 -{1}px".format(
+                        Math.floor(elm.height() / 2),
+                        Math.floor(elm.width() / 2)
+                    );
+                    elm.parent().css({left: "50%", top: "50%", margin: margin});
+                }
             }
         }).data("kendoNotification");
+
 
         var last_time_out_id = 0;
 
         window.noti = function(option, type, time) {
-            if (option == "hide") {
+            if ((option === "hide") || (typeof option === 'undefined')) {
                 k_noti.hide();
+                return false;
+            }
+            if (type === "alert") {
+                k_noti.show(option, type);
                 return false;
             }
             time =  typeof time === 'undefined' ? 300000 : time;

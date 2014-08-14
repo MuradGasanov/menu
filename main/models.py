@@ -71,11 +71,13 @@ class Orders(models.Model):
 
     NOT_COMPLETED = 0
     COMPLETED = 1
+    NEW = 2
     STATUS_CHOICES = (
         (NOT_COMPLETED, 'Не завершен'),
-        (COMPLETED, 'Завершен')
+        (COMPLETED, 'Завершен'),
+        (NEW, 'Новый')
     )
-    status = models.IntegerField(choices=STATUS_CHOICES, default=NOT_COMPLETED)
+    status = models.IntegerField(choices=STATUS_CHOICES, default=NEW)
 
     class Meta:
         ordering = ["-create_at"]

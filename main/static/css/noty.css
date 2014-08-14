@@ -67,3 +67,28 @@
     vertical-align: middle;
     margin-right: 10px;
 }
+/*FIXME: обьеденить дублируюшие классы*/
+.k-notification-alert.k-group {
+    background: rgba(0, 0, 153, 0.70);
+    border-color: rgb(0, 0, 153);
+    color: #fff;
+}
+.alert-noti {
+    width: 240px;
+    padding: 0 30px;
+    height: 35px;
+    line-height: 35px;
+}
+.alert-noti h3 {
+    font-size: 13px;
+    margin: 0;
+    line-height: 35px;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+}
+.alert-noti img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}

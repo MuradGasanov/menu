@@ -22,3 +22,16 @@
         <h3>#= message #</h3>
     </div>
 </script>
+
+
+<script id="alertTemplate" type="text/x-kendo-template">
+    <div class="alert-noti">
+        <img src="{% static "img/noty/alert-icon.png" %}" />
+        <h3>#= message #</h3>
+        <audio autoplay="autoplay">
+            <source src="{% static "sound/noty.mp3" %}" type="audio/mpeg" />
+            <source src="{% static "sound/noty.ogg" %}" type="audio/ogg" />
+            <embed hidden="true" autostart="true" loop="false" src="{% static "sound/noty.mp3" %}" />
+        </audio>
+    </div>
+</script>

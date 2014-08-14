@@ -29,6 +29,7 @@ urlpatterns = patterns('main.views',
                        url(r'^'+MANAGER_BASE_URL+'orders/destroy/$', Orders.destroy),
                        url(r'^'+MANAGER_BASE_URL+'orders/detail/$', Orders.detail),
                        url(r'^'+MANAGER_BASE_URL+'orders/change_status/$', Orders.change_status),
+                       url(r'^'+MANAGER_BASE_URL+'orders/check_orders/$', Orders.check_new_order),
 
                        url(r'^menu/$', Menu.user_read),
                        url(r'^add_order/$', Orders.add_order),

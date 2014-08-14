@@ -455,6 +455,7 @@ $(document).ready(function () {
         detailTemplate: kendo.template($("#orders_detail_template").html()),
         detailInit: order_detail_init,
         columns: [
+            { field: "id", title: "Ид.", width: 40 },
             { field: "create_at", title: "Дата", template: "#=kendo.toString(new Date(Date.parse(create_at)), 'd MMM  HH:mm')#", width: "200px" },
             { field: "customer", title: "Телефон", width: "150px" },
             { field: "address", title: "Адрес"},
@@ -495,12 +496,25 @@ $(document).ready(function () {
                 noti("hide");
                 that.toggleClass("completed_status not_completed_status");
                 that.data("status", response.new_status);
+                orders.dataSource.get(id).status = response.new_status;
                 that.text((status === ORDER_STATUS.COMPLETED)?"Не выполнел" : "Выполнен")
             }
         }).fail(function(response) {
             console.log(response);
         });
     });
+
+    function check_orders() {
+        $.post(MANAGER_BASE_URL + "orders/check_orders/", {},
+        function(data) {
+            $.each(data, function(i, e) {
+                noti({"message": "Новый заказ от " + e.customer}, "alert");
+                orders.dataSource.insert(0, e);
+            });
+            setTimeout(check_orders, 30000);
+        }, "json");
+    }
+    check_orders();
 });
 
 function order_detail_init(e) {
@@ -555,7 +569,4 @@ function order_detail_init(e) {
         ]
     }).data("kendoGrid");
 
-}
-
-function footerTemplate(data) {
 }
