@@ -194,8 +194,6 @@ var detailModel = kendo.observable({
         var current = items.get(itemID);
         if (current) {
             this.set("current", current);
-        } else {
-            return ""; ///FIXME: show menu
         }
     },
 
@@ -263,7 +261,13 @@ menu.route("/checkout", function () {
 menu.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
     var transition = "",
-        current = detailModel.get("current");
+        current = detailModel.get("current"),
+        item = items.get(itemID);
+
+    if (typeof item == "undefined") {
+        menu.navigate("/");
+        return
+    }
 
     if (viewingDetail && current) {
         transition = itemID > 0 ? "tileleft" : "tileright";

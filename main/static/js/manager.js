@@ -202,6 +202,7 @@ $(document).ready(function () {
         files: [],
         menu_id: 0,
         success: function (e) {
+            console.log(e);
             if (e.operation == "upload") {
                 $change_menu_window.modal("hide");
                 var data = menu.dataSource;
@@ -209,7 +210,9 @@ $(document).ready(function () {
                 if (item) {
                     item.image = e.response.image;
                 }
-                reset_file_uploader(); ///FIXME: убрать функцию, она вызывается только сдесь
+                e.sender.wrapper.find("strong.k-upload-status.k-upload-status-total").empty();
+                e.sender.wrapper.find("ul.k-upload-files.k-reset").remove();
+                e.sender._renderInitialFiles([]);
             }
         },
         select: function (e) {
@@ -223,12 +226,6 @@ $(document).ready(function () {
         }
     }).data("kendoUpload");
     $file_uploader.wrapper.removeClass("k-upload-empty"); //.css("margin", "0 36px 15px");
-
-    function reset_file_uploader() {
-        $file_uploader.wrapper.find("strong.k-upload-status.k-upload-status-total").empty();
-        $file_uploader.wrapper.find("ul.k-upload-files.k-reset").remove();
-        $file_uploader._renderInitialFiles([]);
-    }
 
     var menu_dataSource = new kendo.data.DataSource({
         type: "json",
@@ -357,7 +354,7 @@ $(document).ready(function () {
         //}
         $(".k-widget.k-tooltip.k-tooltip-validation.k-invalid-msg").hide();
         menu_model.set("is_edit", false);
-        preview.attr("src", "/media/default.png"); /// FIXME: hard string
+        preview.attr("src", "/media/default.png");
         menu_model.set("categories", data);
         menu_model.set("o", {
             id: 0,
