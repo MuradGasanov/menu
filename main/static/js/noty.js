@@ -40,7 +40,7 @@ if (!String.prototype.format) {
             ],
             show: function (e) {
                 var elm = e.element;
-                if (elm.children().attr("class") !== "alert-noti") {
+                if (elm.children().attr("id") !== "alert-noti") {
                     var margin = "-{0}px 0 0 -{1}px".format(
                         Math.floor(elm.height() / 2),
                         Math.floor(elm.width() / 2)

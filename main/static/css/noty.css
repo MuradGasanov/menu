@@ -1,19 +1,44 @@
+.noti {
+    width: 240px;
+    height: 100px;
+    padding: 0 30px;
+    line-height: 100px;
+}
+.noti h3 {
+    font-size: 16px;
+    margin: 0;
+    line-height: 37px;
+    font-weight: normal;
+    display: inline-block;
+    vertical-align: middle;
+}
+.noti img {
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
 .k-notification-error.k-group {
     background: rgba(255,0,0,.7);
     border-color: rgb(255,0,0);
     color: #ffffff;
 }
-.error-noti {
+#error-noti {
     width: 500px;
     height: 100px;
 }
-.error-noti h3 {
-    font-size: 1.4em;
-    padding: 32px 10px 5px;
+#error-noti h3 {
     font-weight: bold;
     margin: 0;
+    font-size: 20px;
+    display: block;
+    line-height: normal;
+    padding: 27px 5px 2px;
 }
-.error-noti img {
+#error-noti p {
+    line-height: normal;
+}
+#error-noti img {
     float: left;
     margin: 30px 15px 30px 30px;
 }
@@ -23,72 +48,25 @@
     border-color: rgb(0, 0, 153);
     color: #fff;
 }
-.wait-noti {
-    width: 240px;
-    height: 100px;
-    padding: 0 30px;
-    line-height: 100px;
-}
-.wait-noti h3 {
-    font-size: 16px;
-    margin: 0;
-    line-height: 37px;
-    font-weight: normal;
-    display: inline-block;
-    vertical-align: middle;
-}
-.wait-noti img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-}
 
 .k-notification-done.k-group {
     background: rgba(0%,60%,0%,.7);
     border-color: rgb(0%,60%,0%);
     color: #fff;
 }
-.done-noti {
-    width: 240px;
-    height: 100px;
-    padding: 0 30px;
-    line-height: 100px;
-}
-.done-noti h3 {
-    font-size: 16px;
-    margin: 0;
-    line-height: 37px;
-    font-weight: normal;
-    display: inline-block;
-    vertical-align: middle;
-}
-.done-noti img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
-}
-/*FIXME: обьеденить дублируюшие классы*/
 .k-notification-alert.k-group {
     background: rgba(0, 0, 153, 0.70);
     border-color: rgb(0, 0, 153);
     color: #fff;
 }
-.alert-noti {
+#alert-noti {
     width: 240px;
     padding: 0 30px;
     height: 35px;
     line-height: 35px;
 }
-.alert-noti h3 {
+#alert-noti h3 {
     font-size: 13px;
     margin: 0;
     line-height: 35px;
-    font-weight: normal;
-    display: inline-block;
-    vertical-align: middle;
-}
-.alert-noti img {
-    display: inline-block;
-    vertical-align: middle;
-    margin-right: 10px;
 }
