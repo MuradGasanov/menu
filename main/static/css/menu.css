@@ -352,6 +352,7 @@ h3{
     font-size: 19px;
     background-color: inherit;
     box-shadow: none;
+    top: 5px;
 }
 
 #titles.affix {

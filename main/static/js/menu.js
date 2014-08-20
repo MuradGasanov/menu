@@ -132,7 +132,6 @@ var orderModel = kendo.observable({
         }
         if (!that.validator.validate()) { console.log("not validate");return false; }
         if (that.in_progress) { return false; }
-        console.log("order click");
         var contents = that.cart.contents;
 
         var order_id_list = [];
@@ -148,7 +147,6 @@ var orderModel = kendo.observable({
         $.post("add_order/", {
             item: JSON.stringify(that.o)
         }, function(data) {
-            console.log(data);
             that.set("in_progress", false);
             that.set("order_text", "Заказать");
             that.get("cart").clear();
@@ -250,24 +248,46 @@ menu.route("/", function () {
     viewingDetail = false;
     layout.showIn("#content", index);
     layout.showIn("#pre-content", cartPreview);
+    //$("body").scrollTo(0);
+
+    items.fetch(function(e) {
+        var $titles = $('#titles');
+        if ($titles.children().length > 0) { return }
+        var data = this.data(),
+            $items = $();
+        $.each(data, function (i,e) {
+            if (e.type === "category") {
+                $items = $items.add('<li class="title"><a href="#" data-id="menu'+ e.id+'">'+ e.name+'</a></li>');
+            }
+        });
+
+        $titles.append($items).affix({
+            offset: {
+                top: function () {
+                    return $("#content").offset().top - 5 /* top: 5px; */;
+                },
+                bottom: 100
+            }
+        }).on("click", ".title a", function (e) {
+            var id = $(this).data("id");
+            $('body').scrollTo("#"+id);
+            return false;
+        })
+    });
 });
 
 menu.route("/checkout", function () {
     viewingDetail = false;
     layout.showIn("#content", checkout);
     cartPreview.hide();
+    $("body").scrollTo(0);
 });
 
 menu.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
+    $("body").scrollTo(0);
     var transition = "",
-        current = detailModel.get("current"),
-        item = items.get(itemID);
-
-    if (typeof item == "undefined") {
-        menu.navigate("/");
-        return
-    }
+        current = detailModel.get("current");
 
     if (viewingDetail && current) {
         transition = itemID > 0 ? "tileleft" : "tileright";
@@ -276,6 +296,12 @@ menu.route("/menu/:id", function (itemID) {
     itemID = Math.abs(itemID);
 
     items.fetch(function(e) {
+        var item = items.get(itemID);
+
+        if (typeof item == "undefined") {
+            menu.navigate("/");
+            return
+        }
         if (detailModel.get("current")) {
             layout.showIn("#content", detail, transition);
             detailModel.setCurrent(itemID);
@@ -290,17 +316,4 @@ menu.route("/menu/:id", function (itemID) {
 
 $(function () {
     menu.start();
-    $('#titles').affix({
-        offset: {
-            top: function () {
-                return $("#content").offset().top - 5 /* top: 5px; */;
-            },
-            bottom: 100
-        }
-    }).on("click", ".title a", function (e) {
-        var id = $(this).data("id");
-        $('body').scrollTo("#"+id);
-        return false;
-    }).css("top", "5px");
-
 });
