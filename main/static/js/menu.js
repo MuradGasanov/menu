@@ -246,9 +246,9 @@ var viewingDetail = false;
 // Routing
 menu.route("/", function () {
     viewingDetail = false;
+    $("body").scrollTo(1);
     layout.showIn("#content", index);
     layout.showIn("#pre-content", cartPreview);
-    //$("body").scrollTo(0);
 
     items.fetch(function(e) {
         var $titles = $('#titles');
@@ -285,7 +285,6 @@ menu.route("/checkout", function () {
 
 menu.route("/menu/:id", function (itemID) {
     layout.showIn("#pre-content", cartPreview);
-    $("body").scrollTo(0);
     var transition = "",
         current = detailModel.get("current");
 
