@@ -191,7 +191,9 @@
             # if (type === "menu_item") { #
             <li class="products">
                 <a class="view-details" href="\#/menu/#: id #">
-                    <img class="main-image" src="#= image #"  alt="#: name#" title="#: name #" />
+                    <div class="main-image"
+                         style="background: url(#=image#) 50% no-repeat; background-size: cover;"></div>
+{#                    <img  src="#= image #"  alt="#: name#" title="#: name #" />#}
                     <strong data-bind="text: name"></strong>
                     <span class="price"><span data-bind="text: price"></span><span>р.</span></span>
                 </a>

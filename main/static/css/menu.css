@@ -418,6 +418,8 @@ h3{
     position: relative;
     width: 200px;
     height: 200px;
+    background-size: cover;
+    /*background: url() 50% no-repeat;*/
 }
 
 .products h2 {
