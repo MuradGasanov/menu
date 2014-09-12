@@ -10,6 +10,10 @@ class Categories(models.Model):
 
     class Meta:
         ordering = ["weight"]
+        verbose_name = "Категории"
+
+    def __unicode__(self):
+        return unicode(self.name)
 
 
 def get_upload_folder(instance, filename):
@@ -23,6 +27,12 @@ class Menu(models.Model):
     price = models.FloatField(default=0)
     image = models.ImageField(upload_to=get_upload_folder, default="default.png", max_length=300)
     category = models.ForeignKey(Categories)
+
+    class Meta:
+        verbose_name = "Меню"
+
+    def __unicode__(self):
+        return unicode(self.name)
 
 
 @receiver(models.signals.post_delete, sender=Menu)
@@ -55,6 +65,12 @@ def auto_delete_file_on_change(sender, instance, **kwargs):
 class Customers(models.Model):
     phone = models.CharField(max_length=30)
 
+    class Meta:
+        verbose_name = "Клиент"
+
+    def __unicode__(self):
+        return unicode(self.phone)
+
 
 class Orders(models.Model):
     customer = models.ForeignKey(Customers)
@@ -81,9 +97,19 @@ class Orders(models.Model):
 
     class Meta:
         ordering = ["-create_at"]
+        verbose_name = "Заказы"
+
+    def __unicode__(self):
+        return unicode(self.customer)
 
 
 class OrderItem(models.Model):
     order = models.ForeignKey(Orders)
     menu = models.ForeignKey(Menu)
     quantity = models.IntegerField()
+
+    class Meta:
+        verbose_name = "Заказы (товары)"
+
+    def __unicode__(self):
+        return unicode(self.order) + unicode(self.menu)
