@@ -338,6 +338,15 @@ h3{
 
 }
 
+#main-section ul li a {
+    max-width: 185px;
+    overflow: hidden;
+    text-overflow: clip;
+    white-space: nowrap;
+    display: inline-block;
+    font-size: 17px;
+}
+
 #main {
     background-color: inherit;
     width: 800px;
@@ -520,14 +529,16 @@ h3{
 }
 
 #detail-info{
-    width: 600px;
+    width: 800px;
     height: 200px;
     display: inline-block;
+    float: left;
     background: #fff url('../img/menu/item-separator-black.png') repeat-y right top;
 }
 
 #navigate-prev {
     display: inline-block;
+    float: left;
     height: 200px;
     width: 100px;
     background: #D5A65F url('../img/menu/nav-prev.png') no-repeat center;
@@ -543,6 +554,7 @@ h3{
     height: 200px;
     vertical-align: top;
     color: #2e2e2e;
+    width: 600px;
 }
 
 #description h1{
@@ -556,7 +568,7 @@ h3{
 }
 
 #description p{
-    max-width: 300px;
+    max-width: 500px;
     padding-left: 30px;
     padding-bottom: 18px;
     font-size: 12px;
@@ -584,7 +596,7 @@ p#price-quantity {
     vertical-align: middle;
     padding: 20px 30px;
     border-top: 1px dotted #a6a6a6;
-    width: 339px;
+    width: 539px;
 }
 
 p#details-total-price {
