@@ -2,6 +2,7 @@
 from django.db import models
 from django.dispatch import receiver
 import os
+from django_thumbs.db.models import ImageWithThumbsField
 
 
 class Categories(models.Model):
@@ -25,7 +26,14 @@ class Menu(models.Model):
     name = models.CharField(max_length=80)
     description = models.TextField(default="")
     price = models.FloatField(default=0)
-    image = models.ImageField(upload_to=get_upload_folder, default="default.png", max_length=300)
+    #image = models.ImageField(upload_to=get_upload_folder, default="default.png", max_length=500)
+    image = ImageWithThumbsField(upload_to=get_upload_folder,
+                                 default="default.png",
+                                 max_length=500,
+                                 sizes=((100, 100),
+                                        (200, 200),
+                                        (150, 100),
+                                        (280, 280)))
     category = models.ForeignKey(Categories)
 
     class Meta:

@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from __builtin__ import staticmethod
+import os
 
 __author__ = 'Murad Gasanov'
 
@@ -219,13 +220,18 @@ class Menu():
                     "name": c.name
                 })
                 for m in menu:
+                    thumb_name, thumb_extension = os.path.splitext(m.image.url)
                     menu_list.append({
                         "id": m.id,
                         "type": "menu_item",
                         "name": m.name,
                         "description": m.description,
                         "price": m.price,
-                        "image": m.image.url
+                        "image": m.image.url,
+                        "image100": thumb_name + ".100x100" + thumb_extension,  # FIXME: сделать на клиенте функциюю
+                        "image150": thumb_name + ".150x100" + thumb_extension,
+                        "image200": thumb_name + ".200x200" + thumb_extension,
+                        "image280": thumb_name + ".280x280" + thumb_extension
                     })
 
         if menu_list:

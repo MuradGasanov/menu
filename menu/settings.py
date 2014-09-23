@@ -52,6 +52,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'main',
     'gunicorn',
+    'django_thumbs'
 )
 
 MIDDLEWARE_CLASSES = (

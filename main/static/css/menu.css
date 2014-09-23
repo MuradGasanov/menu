@@ -179,10 +179,13 @@ h1 a{
     margin-bottom: 20px;
     overflow: hidden;
     -webkit-transition: all 200ms ease-out;
+    transition: all 200ms ease-out;
+    min-height: 122px;
 }
 
 #shop-info.empty {
     height: 0px;
+    min-height: 0px;
 }
 
 .smallImage{
@@ -306,6 +309,11 @@ h3{
     width: 100px;
 }
 
+.selected-product {
+    width: 100px;
+    height: 100px;
+}
+
 .view-selected-items, .view-selected-items:hover {
     display: block;
     position: relative;
@@ -338,13 +346,24 @@ h3{
 
 }
 
-#main-section ul li a {
+#shop-list .view-selected-items {
     max-width: 185px;
     overflow: hidden;
     text-overflow: clip;
     white-space: nowrap;
     display: inline-block;
-    font-size: 17px;
+    /* font-size: 17px; */
+    width: auto;
+}
+
+#main-section ul li a {
+    max-width: 185px;
+    overflow: hidden;
+    text-overflow: clip;
+    /* white-space: nowrap; */
+    display: inline-block;
+    /* font-size: 17px; */
+    width: 185px;
 }
 
 #main {
@@ -355,8 +374,8 @@ h3{
 }
 
 #titles {
-    margin-left: 800px;
-    padding-left: 15px;
+    margin-left: 815px;
+    /* padding-left: 15px; */
     color: white;
     font-size: 19px;
     background-color: inherit;
@@ -368,12 +387,35 @@ h3{
     position: fixed;
 }
 
-.title a{
-    color: #ab7829;
+#titles .title {
+    font-size: 16px;
+    
+    white-space: nowrap;
 }
 
-.title a:hover{
-    color: #555;
+#titles .title a{
+    color: #ab7829;
+    padding: 1px;
+}
+
+#titles li.title a:hover{
+    background-color: rgba(213, 166, 95, 0.28);
+}
+
+#titles li.title.active a {
+    background-color: rgba(213, 166, 95, 0.28);
+}
+
+#titles li.title.active:before {
+    width: 0;
+    height: 0;
+    border-top: 12px solid transparent;
+    border-bottom: 12px solid transparent;
+    border-right: 10px solid rgba(213, 166, 95, 0.28);
+    content: "";
+    position: absolute;
+    left: -10px;
+    z-index: 5000;
 }
 
 .products {
@@ -427,8 +469,6 @@ h3{
     position: relative;
     width: 200px;
     height: 200px;
-    background-size: cover;
-    /*background: url() 50% no-repeat;*/
 }
 
 .products h2 {
@@ -515,13 +555,13 @@ h3{
     line-height: 1em;
 }
 
-.icon_plus {
-    width: 8px;
-    height: 8px;
-    background: url('../img/menu/icon_plus.png') no-repeat;
-    display: inline-block;
-    padding-right: 6px;
-}
+/*.icon_plus {*/
+    /*width: 8px;*/
+    /*height: 8px;*/
+    /*background: url('../img/menu/icon_plus.png') no-repeat;*/
+    /*display: inline-block;*/
+    /*padding-right: 6px;*/
+/*}*/
 
 #details{
     background-color: #fff;
@@ -534,6 +574,10 @@ h3{
     display: inline-block;
     float: left;
     background: #fff url('../img/menu/item-separator-black.png') repeat-y right top;
+}
+
+#detail-info img.main-image {
+    float: left;
 }
 
 #navigate-prev {
@@ -568,7 +612,7 @@ h3{
 }
 
 #description p{
-    max-width: 500px;
+    max-width: 540px;
     padding-left: 30px;
     padding-bottom: 18px;
     font-size: 12px;
@@ -594,7 +638,7 @@ p#price-quantity {
     height: 30px;
     line-height: 30px;
     vertical-align: middle;
-    padding: 20px 30px;
+    padding: 15px 30px;
     border-top: 1px dotted #a6a6a6;
     width: 539px;
 }
@@ -806,7 +850,8 @@ p#details-total-price span{
 #details-checkout img {
  vertical-align: middle;
 padding-right: 40px;
-    width: 150px;
+    
+ width: 150px;
 }
 
 table{
@@ -876,9 +921,12 @@ table tbody td img{
 
 table tbody td span.product-name {
     display: inline-block;
-    max-width: 250px;
+    white-space: nowrap;
+    max-width: 320px;
     height: 100px;
     line-height: 100px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 table tbody td:first-child + td + td {
@@ -1099,4 +1147,25 @@ table tbody td:after{
     -webkit-transform: translatex(100%);
     -moz-transform: translatex(100%);
     transform: translatex(100%);
+}
+
+.tooltip-wrapper {
+    width: 300px;
+}
+.tooltip-wrapper .tooltip-image {
+    width: 280px;
+    height: 280px;
+}
+
+.ui-widget-content {
+    border: 1px solid;
+    border-radius: 1px;
+    background: #fcfdfd url("../img/menu/ui-bg_inset-hard_100_fcfdfd_1x100.png") 50% bottom repeat-x;
+    color: #ab7829;
+}
+
+.tooltip-wrapper .description {
+    width: 280px;
+    text-align: justify;
+    display: inline-block;
 }

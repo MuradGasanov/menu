@@ -169,7 +169,7 @@ var detailModel = kendo.observable({
     imgUrl: function () {
         var current = this.get("current");
         if (current) {
-            return current.image
+            return current.image200
         } else {
             return ""
         }
@@ -255,9 +255,15 @@ menu.route("/", function () {
         if ($titles.children().length > 0) { return }
         var data = this.data(),
             $items = $();
+        var is_first = true;
         $.each(data, function (i,e) {
             if (e.type === "category") {
-                $items = $items.add('<li class="title"><a href="#" data-id="menu'+ e.id+'">'+ e.name+'</a></li>');
+                if (is_first) {
+                    $items = $items.add('<li class="title active"><a href="#menu' + e.id + '" data-id="menu' + e.id + '">' + e.name + '</a></li>');
+                    is_first = false;
+                } else {
+                    $items = $items.add('<li class="title"><a href="#menu'+ e.id+'" data-id="menu'+ e.id+'">'+ e.name+'</a></li>');
+                }
             }
         });
 
@@ -265,14 +271,53 @@ menu.route("/", function () {
             offset: {
                 top: function () {
                     return $("#content").offset().top - 5 /* top: 5px; */;
-                },
-                bottom: 100
+                }
             }
         }).on("click", ".title a", function (e) {
             var id = $(this).data("id");
             $('body').scrollTo("#"+id);
             return false;
-        })
+        });
+
+        $("body").scrollspy({target: "#content"});
+
+        $('#main').tooltip({
+            items: 'a.view-details',
+            content: function (data) {
+                return "<i>Загрузка...</i>";
+            },
+            show: null,
+            track: true,
+            position: { my: "left+80 top-30", collision: "flipfit" },
+            open: function(event, ui) {
+                if (typeof(event.originalEvent) === 'undefined') {
+                    return false;
+                }
+                var $id = $(ui.tooltip).attr('id');
+                $('div.ui-tooltip').not('#' + $id).remove();
+
+                var $target = $(event.toElement).closest(".products");
+                if (!$target.hasClass("products")) {
+                    return false;
+                }
+                var uid = $target.data("uid");
+                var product = items.getByUid(uid);
+                var template = kendo.template($("#tooltip").html());
+                ui.tooltip.html(template(product));
+            },
+            close: function(event, ui) {
+                //console.log(ui.tooltip);
+                ui.tooltip.remove();
+//                ui.tooltip.hover(function() {
+//                    $(this).stop(true).fadeTo(400, 1);
+//                },
+//                function() {
+//                    $(this).fadeOut('400', function() {
+//                        $(this).remove();
+//                    });
+//                });
+            }
+        });
     });
 });
 
