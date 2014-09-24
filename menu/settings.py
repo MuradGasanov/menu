@@ -16,7 +16,7 @@ import socket
 if socket.gethostname() in ("murad-pc", "user-pc"):
     DEBUG = True
 else:
-    DEBUG = True
+    DEBUG = False
 
 TEMPLATE_DEBUG = DEBUG
 
