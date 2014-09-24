@@ -228,10 +228,10 @@ class Menu():
                         "description": m.description,
                         "price": m.price,
                         "image": m.image.url,
-                        "image100": thumb_name + ".100x100" + thumb_extension,  # FIXME: сделать на клиенте функциюю
-                        "image150": thumb_name + ".150x100" + thumb_extension,
-                        "image200": thumb_name + ".200x200" + thumb_extension,
-                        "image280": thumb_name + ".280x280" + thumb_extension
+                        "image100": m.image.url_100x100,  # FIXME: сделать на клиенте функциюю
+                        "image150": m.image.url_150x100,
+                        "image200": m.image.url_200x200,
+                        "image280": m.image.url_280x280
                     })
 
         if menu_list:
